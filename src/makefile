@@ -23,7 +23,7 @@ CFLAGS = -g -Wall
 ##LIBS = -lmylib -lm
 
 # define the C/C++ source files
-SRCS = main.cpp
+SRCS = main.cpp chip8.cpp
 
 # define the C/C++ object files 
 # This uses Suffix Replacement within a macro:
