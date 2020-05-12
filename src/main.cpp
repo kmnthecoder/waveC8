@@ -36,8 +36,12 @@ int main(int argc, char **argv)
     */
     chip8 myChip8;
     
-    //myChip8.helloWorld();
+    myChip8.helloWorld();
+    myChip8.initizalize();
 
-    std::cout << "\nHello world!";
+
+
+    //std::cout << "\nHello world!" << SCREEN_HEIGHT << " X " << SCREEN_WIDTH;
+
     return 0;
 }
