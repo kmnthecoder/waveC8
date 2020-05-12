@@ -36,7 +36,7 @@ int main(int argc, char **argv)
     */
     chip8 myChip8;
     
-    myChip8.helloWorld();
+    //myChip8.helloWorld();
 
     std::cout << "\nHello world!";
     return 0;
