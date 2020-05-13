@@ -35,10 +35,9 @@ int main(int argc, char **argv)
     }
     */
     chip8 myChip8;
-    const char *filename = "../roms/c8games/PONG";
 
     myChip8.initizalize();
-    myChip8.loadFile(filename);
+    myChip8.loadFile("../roms/c8games/PONG");
 
     return 0;
 }
