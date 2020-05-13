@@ -1,6 +1,8 @@
 //#include <vector>
+
 extern const int SCREEN_WIDTH;
 extern const int SCREEN_HEIGHT;
+extern const int START_ADDRESS;
 
 class chip8
 {
@@ -11,6 +13,7 @@ public:
     //
     void initizalize();
     void emulateCycle();
+    void loadFile(const char* filename);
 
 private:
     unsigned short opcode;

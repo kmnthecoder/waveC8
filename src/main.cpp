@@ -35,13 +35,10 @@ int main(int argc, char **argv)
     }
     */
     chip8 myChip8;
-    
-    myChip8.helloWorld();
+    const char *filename = "../roms/c8games/PONG";
+
     myChip8.initizalize();
-
-
-
-    //std::cout << "\nHello world!" << SCREEN_HEIGHT << " X " << SCREEN_WIDTH;
+    myChip8.loadFile(filename);
 
     return 0;
 }
