@@ -1,5 +1,8 @@
 //#include <vector>
 
+#ifndef CHIP_H
+#define CHIP_H
+
 extern const int SCREEN_WIDTH;
 extern const int SCREEN_HEIGHT;
 extern const int START_ADDRESS;
@@ -32,3 +35,5 @@ private:
     unsigned short sp; // stack pointer
     unsigned char key[16];
 };
+
+#endif // CHIP_H
