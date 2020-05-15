@@ -48,10 +48,10 @@ void chip8::initizalize()
     sp = 0;             // reset stack pointer
 
     // clear display, stack, registers, memory
-    memset(screen, 0, SCREEN_HEIGHT * SCREEN_WIDTH);
-    memset(stack, 0, 16);
-    memset(V, 0, 16);
-    memset(memory, 0, 4096);
+    memset(screen, 0, sizeof(screen));
+    memset(stack, 0, sizeof(stack));
+    memset(V, 0, sizeof(V));
+    memset(memory, 0, sizeof(memory));
 
     // load fontset into memory
     for (int i = 0; i < FONTSET_SIZE; i++)

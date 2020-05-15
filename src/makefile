@@ -10,17 +10,17 @@ CC = g++
 CFLAGS = -g -Wall
 
 # define any directories containing header files other than /usr/include
-##INCLUDES = -I/home/newhall/include  -I../include
+#INCLUDES = -IC:\MinGW\include\SDL2
 
 # define library paths in addition to /usr/lib
 #   if I wanted to include libraries not in /usr/lib I'd specify
 #   their path using -Lpath, something like:
-##LFLAGS = -L/home/newhall/lib  -L../lib
+#LFLAGS = -LC:\MinGW\lib
 
 # define any libraries to link into executable:
 #   if I want to link in libraries (libx.so or libx.a) I use the -llibname 
 #   option, something like (this will link in libmylib.so and libm.so:
-##LIBS = -lmylib -lm
+#LIBS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 
 # define the C/C++ source files
 SRCS = main.cpp chip8.cpp
@@ -52,7 +52,7 @@ $(MAIN): $(OBJS)
 # it uses automatic variables $<: the name of the prerequisite of
 # the rule(a .c/.cpp file) and $@: the name of the target of the rule (a .o file) 
 # (see the gnu make manual section about automatic variables)
-.c.o:
+.cpp.o:
 	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
 
 clean:
