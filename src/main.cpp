@@ -34,10 +34,11 @@ int main(int argc, char **argv)
         chip8.setKeys();
     }
     */
-    chip8 myChip8;
+    Chip8 myChip8;
 
     myChip8.initizalize();
     myChip8.loadFile("../roms/c8games/PONG");
+    myChip8.emulateCycle();
 
     return 0;
 }

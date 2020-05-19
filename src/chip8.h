@@ -9,13 +9,13 @@ extern const int START_ADDRESS;
 extern const int FONTSET_SIZE;
 extern const int FONTSET_START_ADDRESS;
 
-class chip8
+class Chip8
 {
 public:
     bool drawFlag;
 
-    chip8();
-    ~chip8();
+    Chip8();
+    ~Chip8();
 
     void initizalize();
     void emulateCycle();
@@ -34,6 +34,8 @@ private:
     //std::vector<unsigned short> mStack;
     unsigned short sp; // stack pointer
     unsigned char key[16];
+
+    //table[0x0] = &Chip8::Table0;
 };
 
 #endif // CHIP_H

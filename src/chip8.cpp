@@ -30,17 +30,17 @@ unsigned char fontset[FONTSET_SIZE] =
         0xF0, 0x80, 0xF0, 0x80, 0x80  //F
 };
 
-chip8::chip8()
+Chip8::Chip8()
 {
 }
 
-chip8::~chip8()
+Chip8::~Chip8()
 {
 }
 
 //
 
-void chip8::initizalize()
+void Chip8::initizalize()
 {
     pc = START_ADDRESS; // program counter starts at this memory location
     opcode = 0;         // reset current opcode
@@ -67,11 +67,33 @@ void chip8::initizalize()
     drawFlag = true;
 }
 
-void chip8::emulateCycle()
+void Chip8::emulateCycle()
 {
+    // fetch opcode
+    opcode = memory[pc] << 8 | memory[pc + 1];
+
+    std::cout << "Opcode: " << std::hex << std::uppercase << opcode << std::endl;
+
+    // decode opcode
+    // execute opcode
+
+    // update timers
+    if (delay_timer > 0)
+    {
+        delay_timer--;
+    }
+
+    if (sound_timer > 0)
+    {
+        if (sound_timer == 1)
+        {
+            std::cout << "BEEP" << std::endl;
+        }
+        sound_timer--;
+    }
 }
 
-void chip8::loadFile(const char *filename)
+void Chip8::loadFile(const char *filename)
 {
     std::cout << "Attempting to load: " << filename << std::endl;
 
