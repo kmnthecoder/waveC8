@@ -23,7 +23,7 @@ CFLAGS = -g -Wall
 #LIBS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
 
 # define the C/C++ source files
-SRCS = main.cpp chip8.cpp
+SRCS = main.cpp chip8.cpp opcodes.cpp
 
 # define the C/C++ object files 
 # This uses Suffix Replacement within a macro:

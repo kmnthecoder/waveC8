@@ -69,8 +69,9 @@ void Chip8::initizalize()
 
 void Chip8::emulateCycle()
 {
-    // fetch opcode
+    // fetch opcode and increment pc
     opcode = memory[pc] << 8 | memory[pc + 1];
+    pc += 2;
 
     std::cout << "Opcode: " << std::hex << std::uppercase << opcode << std::endl;
 
