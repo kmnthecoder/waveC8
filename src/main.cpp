@@ -38,7 +38,12 @@ int main(int argc, char **argv)
 
     myChip8.initizalize();
     myChip8.loadFile("../roms/c8games/PONG");
-    myChip8.emulateCycle();
+
+    for (int i = 0; i <= 4; i++) {
+        myChip8.emulateCycle();
+    }
+
+    //myChip8.emulateCycle();
 
     return 0;
 }

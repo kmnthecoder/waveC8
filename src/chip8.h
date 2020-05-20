@@ -35,7 +35,42 @@ private:
     unsigned short sp; // stack pointer
     unsigned char key[16];
 
-    //table[0x0] = &Chip8::Table0;
+    // opcodes defined in opcodes.cpp
+    inline void OP_0NNN();
+    inline void OP_00E0();
+    inline void OP_00EE();
+    inline void OP_1NNN();
+    inline void OP_2NNN();
+    inline void OP_3XNN();
+    inline void OP_4XNN();
+    inline void OP_5XY0();
+    inline void OP_6XNN();
+    inline void OP_7XNN();
+    inline void OP_8XY0();
+    inline void OP_8XY1();
+    inline void OP_8XY2();
+    inline void OP_8XY3();
+    inline void OP_8XY4();
+    inline void OP_8XY5();
+    inline void OP_8XY6();
+    inline void OP_8XY7();
+    inline void OP_8XYE();
+    inline void OP_9XY0();
+    inline void OP_ANNN();
+    inline void OP_BNNN();
+    inline void OP_CXNN();
+    inline void OP_DXYN();
+    inline void OP_EX9E();
+    inline void OP_EXA1();
+    inline void OP_FX07();
+    inline void OP_FX0A();
+    inline void OP_FX15();
+    inline void OP_FX18();
+    inline void OP_FX1E();
+    inline void OP_FX29();
+    inline void OP_FX33();
+    inline void OP_FX55();
+    inline void OP_FX65();
 };
 
 #endif // CHIP_H

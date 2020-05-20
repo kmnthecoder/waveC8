@@ -1,4 +1,5 @@
 #include "chip8.h"
+#include "opcodes.cpp"
 
 #include <iostream>
 #include <cstring>
