@@ -2,6 +2,7 @@
 
 #include <stdlib.h> /* rand() */
 #include <cstring>  /* memset */
+#include <iostream>
 
 #define OP ((opcode & 0xF000) >> 12)
 #define NNN (opcode & 0x0FFF)
@@ -323,4 +324,31 @@ inline void Chip8::OP_FX65()
     {
         V[i] = memory[I + i];
     }
+}
+
+// Null OP Code
+inline void Chip8::OP_NULL()
+{
+    std::cout << std::endl
+              << "Null OP Code" << std::endl;
+}
+
+inline void Chip8::Table0()
+{
+    ((*this).*(table0[opcode & 0x000F]))();
+}
+
+inline void Chip8::Table8()
+{
+    ((*this).*(table8[opcode & 0x000F]))();
+}
+
+inline void Chip8::TableE()
+{
+    ((*this).*(tableE[opcode & 0x000F]))();
+}
+
+inline void Chip8::TableF()
+{
+    ((*this).*(tableF[opcode & 0x00FF]))();
 }

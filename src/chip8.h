@@ -71,6 +71,21 @@ private:
     inline void OP_FX33();
     inline void OP_FX55();
     inline void OP_FX65();
+    inline void OP_NULL();
+
+    inline void Table0();
+    inline void Table8();
+    inline void TableE();
+    inline void TableF();
+
+    
+
+    typedef void (Chip8::*OPCodeTable)();
+    OPCodeTable table[0xF + 1]{&Chip8::OP_NULL};
+    OPCodeTable table0[0xE + 1]{&Chip8::OP_NULL};
+    OPCodeTable table8[0xE + 1]{&Chip8::OP_NULL};
+    OPCodeTable tableE[0xE + 1]{&Chip8::OP_NULL};
+    OPCodeTable tableF[0x65 + 1]{&Chip8::OP_NULL};
 };
 
 #endif // CHIP_H
