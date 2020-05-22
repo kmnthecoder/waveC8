@@ -17,9 +17,13 @@ public:
     Chip8();
     ~Chip8();
 
-    void initizalize();
-    void emulateCycle();
-    void loadFile(const char *filename);
+    void Initizalize();
+    void EmulateCycle();
+    void LoadFile(const char *filename);
+
+    //unsigned char GetScreen(int index);
+    unsigned char screen[64 * 32];
+    unsigned char key[16];
 
 private:
     unsigned short opcode;
@@ -27,13 +31,16 @@ private:
     unsigned char V[16]; // registers
     unsigned short I;    // index register
     unsigned short pc;   // program counter
-    unsigned char screen[64 * 32];
+
     unsigned char delay_timer;
     unsigned char sound_timer;
     unsigned short stack[16];
     //std::vector<unsigned short> mStack;
     unsigned short sp; // stack pointer
-    unsigned char key[16];
+
+    void UpdateTimers();
+    void FetchOPCode();
+    void StepCpu();
 
     // opcodes defined in opcodes.cpp
     inline void OP_0NNN();
@@ -71,21 +78,19 @@ private:
     inline void OP_FX33();
     inline void OP_FX55();
     inline void OP_FX65();
-    inline void OP_NULL();
+    //inline void OP_NULL();
 
     inline void Table0();
     inline void Table8();
     inline void TableE();
     inline void TableF();
 
-    
-
     typedef void (Chip8::*OPCodeTable)();
-    OPCodeTable table[0xF + 1]{&Chip8::OP_NULL};
-    OPCodeTable table0[0xE + 1]{&Chip8::OP_NULL};
-    OPCodeTable table8[0xE + 1]{&Chip8::OP_NULL};
-    OPCodeTable tableE[0xE + 1]{&Chip8::OP_NULL};
-    OPCodeTable tableF[0x65 + 1]{&Chip8::OP_NULL};
+    OPCodeTable table[0xF + 1]{};
+    OPCodeTable table0[0xE + 1]{};
+    OPCodeTable table8[0xE + 1]{};
+    OPCodeTable tableE[0xE + 1]{};
+    OPCodeTable tableF[0x65 + 1]{};
 };
 
 #endif // CHIP_H

@@ -10,7 +10,7 @@ CC = g++
 CFLAGS = -g -Wall
 
 # define any directories containing header files other than /usr/include
-#INCLUDES = -IC:\MinGW\include\SDL2
+INCLUDES = -IC:\MinGW\include\SDL2
 
 # define library paths in addition to /usr/lib
 #   if I wanted to include libraries not in /usr/lib I'd specify
@@ -20,10 +20,11 @@ CFLAGS = -g -Wall
 # define any libraries to link into executable:
 #   if I want to link in libraries (libx.so or libx.a) I use the -llibname 
 #   option, something like (this will link in libmylib.so and libm.so:
-#LIBS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
+LIBS = -lmingw32 -lSDL2_image -lSDL2main -lSDL2
+#-lmingw32 -lSDL2_image -lSDL2main -lSDL2
 
 # define the C/C++ source files
-SRCS = main.cpp chip8.cpp opcodes.cpp
+SRCS = chip8.cpp opcodes.cpp sdllayer.cpp main.cpp
 
 # define the C/C++ object files 
 # This uses Suffix Replacement within a macro:

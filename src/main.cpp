@@ -1,6 +1,9 @@
-#include "chip8.h"
-
 #include <iostream>
+#include <chrono>
+#include <SDL.h>
+
+#include "chip8.h"
+#include "sdllayer.h"
 
 int main(int argc, char **argv)
 {
@@ -22,7 +25,7 @@ int main(int argc, char **argv)
     for (;;)
     {
         ** Emulate one cycle
-        chip8.emulateCycle();
+        chip8.EmulateCycle();
 
         ** if draw flag is set, update the screen
         if(chip8.drawFlag)
@@ -36,14 +39,45 @@ int main(int argc, char **argv)
     */
     Chip8 myChip8;
 
-    myChip8.initizalize();
-    myChip8.loadFile("../roms/c8games/PONG");
+    int scale = 10;
+    int delay = 1;
 
-    for (int i = 0; i <= 4; i++) {
-        myChip8.emulateCycle();
+    SdlLayer sdl("CHIP-8", SCREEN_WIDTH * scale, SCREEN_HEIGHT * scale,
+                 SCREEN_WIDTH, SCREEN_HEIGHT);
+
+    myChip8.Initizalize();
+    //myChip8.LoadFile("../roms/c8games/PONG");
+    myChip8.LoadFile("../roms/tests/test2");
+
+    int videoPitch = sizeof(myChip8.screen[0]) * SCREEN_WIDTH;
+
+    auto lastCycleTime = std::chrono::high_resolution_clock::now();
+
+    bool quit = false;
+
+    while (!quit)
+    {
+        quit = sdl.ProcessInput(myChip8.key);
+
+        auto currentTime = std::chrono::high_resolution_clock::now();
+        float dt = std::chrono::duration<float, std::chrono::milliseconds::period>(currentTime - lastCycleTime).count();
+
+        if (dt > delay)
+        {
+            lastCycleTime = currentTime;
+
+            myChip8.EmulateCycle();
+
+            sdl.Update(myChip8.screen, videoPitch);
+        }
     }
 
-    //myChip8.emulateCycle();
+    /*
+    for (int i = 0; i <= 4; i++)
+    {
+        myChip8.EmulateCycle();
+    }
+    */
 
     return 0;
 }
