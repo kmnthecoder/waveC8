@@ -23,22 +23,22 @@ public:
 
     //unsigned char GetScreen(int index);
     //unsigned char screen[64 * 32];
-    unsigned int screen[64 * 32];
+    unsigned int screen[64 * 32]{};
     //uint32_t screen[64*32];
-    unsigned char key[16];
+    unsigned char key[16]{};
 
 private:
-    unsigned short opcode;
-    unsigned char memory[4096];
-    unsigned char V[16]; // registers
-    unsigned short I;    // index register
-    unsigned short pc;   // program counter
+    unsigned short opcode{};
+    unsigned char memory[4096]{};
+    unsigned char V[16]{}; // registers
+    unsigned short I{};    // index register
+    unsigned short pc{};   // program counter
 
-    unsigned char delay_timer;
-    unsigned char sound_timer;
-    unsigned short stack[16];
+    unsigned char delay_timer{};
+    unsigned char sound_timer{};
+    unsigned short stack[16]{};
     //std::vector<unsigned short> mStack;
-    unsigned short sp; // stack pointer
+    unsigned short sp{}; // stack pointer
 
     const unsigned char fontset[80] =
         {

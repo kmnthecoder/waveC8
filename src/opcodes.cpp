@@ -271,7 +271,6 @@ inline void Chip8::OP_DXYN()
     drawFlag = true;
     */
 
-    
     uint8_t Vx = (opcode & 0x0F00u) >> 8u;
     uint8_t Vy = (opcode & 0x00F0u) >> 4u;
     uint8_t height = opcode & 0x000Fu;
@@ -305,7 +304,6 @@ inline void Chip8::OP_DXYN()
             }
         }
     }
-
 
     /*
     // X,Y coordinates of sprite
@@ -381,22 +379,14 @@ inline void Chip8::OP_FX07()
 // Wait for a keypress and store the result in register VX
 inline void Chip8::OP_FX0A()
 {
-    bool keyPress = false;
-
     for (int i = 0; i < 16; i++)
     {
         if (key[i] != 0)
         {
             V[VX] = i;
-            keyPress = true;
         }
     }
     pc += 2;
-
-    if (!keyPress)
-    {
-        //pc -= 2;
-    }
 }
 
 // Set the delay timer to the value of register VX
