@@ -129,7 +129,7 @@ void Chip8::StepCpu()
 void Chip8::FetchOPCode()
 {
     opcode = memory[pc] << 8 | memory[pc + 1];
-    pc += 2;
+    //pc += 2;
 }
 
 void Chip8::UpdateTimers()

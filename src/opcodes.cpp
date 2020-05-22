@@ -11,13 +11,18 @@
 #define VX ((opcode & 0x0F00) >> 8)
 #define VY ((opcode & 0x00F0) >> 4)
 
-// Execute machine langeuage subroutine at address NNN
-inline void Chip8::OP_0NNN() {}
+// Execute machine language subroutine at address NNN
+inline void Chip8::OP_0NNN()
+{
+    pc += 2;
+}
 
 // Clear the screen
 inline void Chip8::OP_00E0()
 {
     memset(screen, 0, sizeof(screen));
+    drawFlag = 1;
+    pc += 2;
 }
 
 // Return from a subroutine
@@ -25,6 +30,7 @@ inline void Chip8::OP_00EE()
 {
     sp--;
     pc = stack[sp];
+    pc += 2;
 }
 
 // Jump to address NNN
@@ -48,6 +54,7 @@ inline void Chip8::OP_3XNN()
     {
         pc += 2;
     }
+    pc += 2;
 }
 
 // Skip the following instruction if the value of register VX is not equal to NN
@@ -57,6 +64,7 @@ inline void Chip8::OP_4XNN()
     {
         pc += 2;
     }
+    pc += 2;
 }
 
 // Skip the following instruction if the value of register VX is equal to
@@ -67,42 +75,49 @@ inline void Chip8::OP_5XY0()
     {
         pc += 2;
     }
+    pc += 2;
 }
 
 // Store number NN in register VX
 inline void Chip8::OP_6XNN()
 {
     V[VX] = NN;
+    pc += 2;
 }
 
 // Add the value NN to register VX
 inline void Chip8::OP_7XNN()
 {
     V[VX] += NN;
+    pc += 2;
 }
 
 // Store the value of register VY in register VX
 inline void Chip8::OP_8XY0()
 {
     V[VX] = V[VY];
+    pc += 2;
 }
 
 // Set VX to VX OR VY
 inline void Chip8::OP_8XY1()
 {
     V[VX] |= V[VY];
+    pc += 2;
 }
 
 // Set VX to VX AND VY
 inline void Chip8::OP_8XY2()
 {
     V[VX] &= V[VY];
+    pc += 2;
 }
 
 // Set VX to VX XOR VY
 inline void Chip8::OP_8XY3()
 {
     V[VX] ^= V[VY];
+    pc += 2;
 }
 
 // Add the value of register VY to register VX
@@ -110,8 +125,18 @@ inline void Chip8::OP_8XY3()
 // Set VF to 00 if a carry does not occur
 inline void Chip8::OP_8XY4()
 {
+    /*
     ((V[VY] + V[VX]) > 0xFF) ? V[0xF] = 1 : V[0xF] = 0;
     V[VX] += V[VY];
+    */
+
+    unsigned short sum;
+    sum = V[VY] + V[VX];
+    (sum > 0xFF) ? V[0xF] = 1 : V[0xF] = 0;
+
+    // lowest 8 bits are kept
+    V[VX] = (unsigned char)sum;
+    pc += 2;
 }
 
 // Subtract the value of register VY from register VX
@@ -121,6 +146,7 @@ inline void Chip8::OP_8XY5()
 {
     (V[VY] > V[VX]) ? V[0xF] = 0 : V[0xF] = 1;
     V[VX] -= V[VY];
+    pc += 2;
 }
 
 // Store the value of register VY shifted right one bit in register VX
@@ -128,8 +154,9 @@ inline void Chip8::OP_8XY5()
 // VY is unchanged
 inline void Chip8::OP_8XY6()
 {
-    V[0xF] = (V[VX] & 0x1);
+    V[0xF] = V[VX] & 0x01;
     V[VX] >>= 1;
+    pc += 2;
 }
 
 // Set register VX to the value of VY minus VX
@@ -139,6 +166,7 @@ inline void Chip8::OP_8XY7()
 {
     (V[VX] > V[VY]) ? V[0xF] = 0 : V[0xF] = 1;
     V[VX] = V[VY] - V[VX];
+    pc += 2;
 }
 
 // Store the value of register VY shifted left one bit in register VX
@@ -148,6 +176,7 @@ inline void Chip8::OP_8XYE()
 {
     V[0xF] = (V[VX] & 0x80) >> 7;
     V[VX] <<= 1;
+    pc += 2;
 }
 
 // Skip the following instruction if the value of register VX is not equal to the value of register VY
@@ -157,12 +186,14 @@ inline void Chip8::OP_9XY0()
     {
         pc += 2;
     }
+    pc += 2;
 }
 
 // Store memory address NNN in register I
 inline void Chip8::OP_ANNN()
 {
     I = NNN;
+    pc += 2;
 }
 
 // Jump to address NNN + V0
@@ -175,12 +206,108 @@ inline void Chip8::OP_BNNN()
 inline void Chip8::OP_CXNN()
 {
     V[VX] = (rand() % 0xFF) & NN;
+    pc += 2;
 }
 
 // Draw a sprite at position VX, VY with N bytes of sprite data starting at the address stored in I
 // Set VF to 01 if any set pixels are changed to unset, and 00 otherwise
 inline void Chip8::OP_DXYN()
 {
+    /*
+    unsigned short x = V[VX];
+    unsigned short y = V[VY];
+    unsigned short height = N;
+    unsigned short pixel;
+    V[0xF] = 0;
+
+    for (unsigned char yline = 0; yline < height; yline++)
+    {
+        pixel = memory[I + yline];
+        for (unsigned char xline = 0; xline < 8; xline++)
+        {
+            if ((pixel & (0x80 >> xline)) != 0)
+            {
+
+                unsigned char true_x = (x + xline) % SCREEN_WIDTH;
+                unsigned char true_y = (y + yline);
+                //if (vwrap)
+                true_y = true_y % SCREEN_HEIGHT;
+                if (true_x < SCREEN_WIDTH && true_y < SCREEN_HEIGHT)
+                {
+
+                    if (screen[true_x+true_y] == 1)
+                        V[0xF] = 1;
+
+                    screen[true_x+true_y] ^= 1;
+                }
+            }
+        }
+    }
+    drawFlag = 1;
+    pc += 2;
+    */
+
+    /*
+    unsigned short x = V[(opcode & 0x0F00) >> 8];
+    unsigned short y = V[(opcode & 0x00F0) >> 4];
+    unsigned short height = opcode & 0x000F;
+    unsigned short pixel;
+
+    V[0xF] = 0;
+    for (int yline = 0; yline < height; yline++)
+    {
+        pixel = memory[I + yline];
+        for (int xline = 0; xline < 8; xline++)
+        {
+            if ((pixel & (0x80 >> xline)) != 0)
+            {
+                if (screen[(x + xline + ((y + yline) * 64))] == 1)
+                    V[0xF] = 1;
+                screen[x + xline + ((y + yline) * 64)] ^= 1;
+            }
+        }
+    }
+
+    drawFlag = true;
+    */
+
+    
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+    uint8_t Vy = (opcode & 0x00F0u) >> 4u;
+    uint8_t height = opcode & 0x000Fu;
+
+    // Wrap if going beyond screen boundaries
+    uint8_t xPos = V[Vx] % SCREEN_WIDTH;
+    uint8_t yPos = V[Vy] % SCREEN_HEIGHT;
+
+    V[0xF] = 0;
+
+    for (unsigned int row = 0; row < height; ++row)
+    {
+        uint8_t spriteByte = memory[I + row];
+
+        for (unsigned int col = 0; col < 8; ++col)
+        {
+            uint8_t spritePixel = spriteByte & (0x80u >> col);
+            uint32_t *screenPixel = &screen[(yPos + row) * SCREEN_WIDTH + (xPos + col)];
+
+            // Sprite pixel is on
+            if (spritePixel)
+            {
+                // Screen pixel also on - collision
+                if (*screenPixel == 0xFFFFFFFF)
+                {
+                    V[0xF] = 1;
+                }
+
+                // Effectively XOR with the sprite pixel
+                *screenPixel ^= 0xFFFFFFFF;
+            }
+        }
+    }
+
+
+    /*
     // X,Y coordinates of sprite
     unsigned short x = V[VX];
     unsigned short y = V[VY];
@@ -202,7 +329,8 @@ inline void Chip8::OP_DXYN()
         for (int xline = 0; xline < 8; xline++) // loop over 8 bits of 1 row
         {
             unsigned short spritePixel = pixel & (0x80 >> xline);
-            unsigned char *screenPixel = &screen[(yPos + yline) * SCREEN_WIDTH + (xPos) + xline];
+            //unsigned char *screenPixel = &screen[(yPos + yline) * SCREEN_WIDTH + (xPos) + xline];
+            unsigned int *screenPixel = &screen[(yPos + yline) * SCREEN_WIDTH + (xPos) + xline];
 
             if (spritePixel) // if spritePixel is on
             {
@@ -216,6 +344,9 @@ inline void Chip8::OP_DXYN()
         }
     }
     drawFlag = true; // update screen with drawFlag
+    */
+
+    pc += 2;
 }
 
 // Skip the following instruction if the key corresponding to
@@ -226,6 +357,7 @@ inline void Chip8::OP_EX9E()
     {
         pc += 2;
     }
+    pc += 2;
 }
 
 // Skip the following instruction if the key corresponding to
@@ -236,12 +368,14 @@ inline void Chip8::OP_EXA1()
     {
         pc += 2;
     }
+    pc += 2;
 }
 
 // Store the current value of the delay timer in register VX
 inline void Chip8::OP_FX07()
 {
     V[VX] = delay_timer;
+    pc += 2;
 }
 
 // Wait for a keypress and store the result in register VX
@@ -257,10 +391,11 @@ inline void Chip8::OP_FX0A()
             keyPress = true;
         }
     }
+    pc += 2;
 
     if (!keyPress)
     {
-        pc -= 2;
+        //pc -= 2;
     }
 }
 
@@ -268,17 +403,20 @@ inline void Chip8::OP_FX0A()
 inline void Chip8::OP_FX15()
 {
     delay_timer = V[VX];
+    pc += 2;
 }
 
 // Set the sound timer to the value of register VX
 inline void Chip8::OP_FX18()
 {
     sound_timer = V[VX];
+    pc += 2;
 }
 
 // Add the value stored in register VX to register I
 inline void Chip8::OP_FX1E()
 {
+    /*
     if (I + V[VX] > 0xFFF)
     {
         V[0xF] = 1;
@@ -289,12 +427,23 @@ inline void Chip8::OP_FX1E()
     }
 
     I += V[VX];
+    */
+
+    unsigned short sum;
+    sum = I + V[VX];
+    if (sum > 0xFFF)
+        V[0xF] = 1;
+    else
+        V[0xF] = 0;
+    I += V[VX];
+    pc += 2;
 }
 
 // Set I to the memory address of the sprite data corresponding to the hexadecimal digit stored in register VX
 inline void Chip8::OP_FX29()
 {
     I = V[VX] * 0x05;
+    pc += 2;
 }
 
 // Store the binary-coded decimal equivalent of the value stored in
@@ -304,6 +453,7 @@ inline void Chip8::OP_FX33()
     memory[I] = V[VX] / 100;
     memory[I + 1] = (V[VX] / 10) % 10;
     memory[I + 2] = (V[VX] % 100) % 10;
+    pc += 2;
 }
 
 // Store the values of registers V0 to VX inclusive in memory starting at address I
@@ -314,6 +464,7 @@ inline void Chip8::OP_FX55()
     {
         memory[I + i] = V[i];
     }
+    pc += 2;
 }
 
 // Fill registers V0 to VX inclusive with the values stored in memory starting at address I
@@ -324,6 +475,7 @@ inline void Chip8::OP_FX65()
     {
         V[i] = memory[I + i];
     }
+    pc += 2;
 }
 
 // Null OP Code
