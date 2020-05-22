@@ -213,82 +213,24 @@ inline void Chip8::OP_CXNN()
 // Set VF to 01 if any set pixels are changed to unset, and 00 otherwise
 inline void Chip8::OP_DXYN()
 {
-    /*
-    unsigned short x = V[VX];
-    unsigned short y = V[VY];
-    unsigned short height = N;
-    unsigned short pixel;
-    V[0xF] = 0;
 
-    for (unsigned char yline = 0; yline < height; yline++)
-    {
-        pixel = memory[I + yline];
-        for (unsigned char xline = 0; xline < 8; xline++)
-        {
-            if ((pixel & (0x80 >> xline)) != 0)
-            {
-
-                unsigned char true_x = (x + xline) % SCREEN_WIDTH;
-                unsigned char true_y = (y + yline);
-                //if (vwrap)
-                true_y = true_y % SCREEN_HEIGHT;
-                if (true_x < SCREEN_WIDTH && true_y < SCREEN_HEIGHT)
-                {
-
-                    if (screen[true_x+true_y] == 1)
-                        V[0xF] = 1;
-
-                    screen[true_x+true_y] ^= 1;
-                }
-            }
-        }
-    }
-    drawFlag = 1;
-    pc += 2;
-    */
-
-    /*
-    unsigned short x = V[(opcode & 0x0F00) >> 8];
-    unsigned short y = V[(opcode & 0x00F0) >> 4];
-    unsigned short height = opcode & 0x000F;
-    unsigned short pixel;
-
-    V[0xF] = 0;
-    for (int yline = 0; yline < height; yline++)
-    {
-        pixel = memory[I + yline];
-        for (int xline = 0; xline < 8; xline++)
-        {
-            if ((pixel & (0x80 >> xline)) != 0)
-            {
-                if (screen[(x + xline + ((y + yline) * 64))] == 1)
-                    V[0xF] = 1;
-                screen[x + xline + ((y + yline) * 64)] ^= 1;
-            }
-        }
-    }
-
-    drawFlag = true;
-    */
-
-    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
-    uint8_t Vy = (opcode & 0x00F0u) >> 4u;
-    uint8_t height = opcode & 0x000Fu;
+/*
+    unsigned char height = N;
 
     // Wrap if going beyond screen boundaries
-    uint8_t xPos = V[Vx] % SCREEN_WIDTH;
-    uint8_t yPos = V[Vy] % SCREEN_HEIGHT;
+    unsigned char x = V[VX] % SCREEN_WIDTH;
+    unsigned char y = V[VY] % SCREEN_HEIGHT;
 
     V[0xF] = 0;
 
-    for (unsigned int row = 0; row < height; ++row)
+    for (int row = 0; row < height; row++)
     {
-        uint8_t spriteByte = memory[I + row];
+        unsigned char spriteByte = memory[I + row];
 
-        for (unsigned int col = 0; col < 8; ++col)
+        for (int col = 0; col < 8; col++)
         {
-            uint8_t spritePixel = spriteByte & (0x80u >> col);
-            uint32_t *screenPixel = &screen[(yPos + row) * SCREEN_WIDTH + (xPos + col)];
+            unsigned char spritePixel = spriteByte & (0x80u >> col);
+            unsigned int *screenPixel = &screen[(y + row) * SCREEN_WIDTH + (x + col)];
 
             // Sprite pixel is on
             if (spritePixel)
@@ -304,45 +246,40 @@ inline void Chip8::OP_DXYN()
             }
         }
     }
+    */
 
-    /*
     // X,Y coordinates of sprite
     unsigned short x = V[VX];
     unsigned short y = V[VY];
-
     unsigned short height = N;
     unsigned short pixel;
-
-    // screen boundaries wrap
-    unsigned short xPos = V[x] % SCREEN_WIDTH;
-    unsigned short yPos = V[y] % SCREEN_HEIGHT;
-
-    // reset register V[F]
     V[0xF] = 0;
 
-    for (int yline = 0; yline < height; yline++) // loop over each row
+    for (unsigned int yline = 0; yline < height; yline++)
     {
         pixel = memory[I + yline]; // fetch pixel from memory starting at location I
-
-        for (int xline = 0; xline < 8; xline++) // loop over 8 bits of 1 row
+        for (unsigned int xline = 0; xline < 8; xline++) // loop over 8 bits of 1 row
         {
-            unsigned short spritePixel = pixel & (0x80 >> xline);
-            //unsigned char *screenPixel = &screen[(yPos + yline) * SCREEN_WIDTH + (xPos) + xline];
-            unsigned int *screenPixel = &screen[(yPos + yline) * SCREEN_WIDTH + (xPos) + xline];
-
-            if (spritePixel) // if spritePixel is on
+            if ((pixel & (0x80 >> xline)) != 0)
             {
-                if (*screenPixel == 0xFFFFFFFF) // screenPixel on; collision detected
+                unsigned char true_x = (x + xline) % SCREEN_WIDTH;
+                unsigned char true_y = (y + yline);
+                true_y = true_y % SCREEN_HEIGHT;
+
+                if (true_x < SCREEN_WIDTH && true_y < SCREEN_HEIGHT)
                 {
-                    V[0xF] = 1;
+                    if (screen[true_x * true_y] == 1)
+                    {
+                        V[0xF] = 1;
+                    }
+
+                    screen[true_x * true_y] ^= 1;
                 }
-                // XOR with spritePixel
-                *screenPixel ^= 0xFFFFFFFF;
             }
+           
         }
     }
-    drawFlag = true; // update screen with drawFlag
-    */
+    
 
     pc += 2;
 }
