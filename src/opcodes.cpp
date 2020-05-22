@@ -442,7 +442,7 @@ inline void Chip8::OP_FX1E()
 // Set I to the memory address of the sprite data corresponding to the hexadecimal digit stored in register VX
 inline void Chip8::OP_FX29()
 {
-    I = V[VX] * 0x05;
+    I = FONTSET_START_ADDRESS + (V[VX] * 0x05);
     pc += 2;
 }
 
