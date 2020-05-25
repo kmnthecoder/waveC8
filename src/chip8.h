@@ -144,11 +144,11 @@ public:
 	void LoadROM(char const* filename);
 	void Cycle();
 
-	uint8_t keypad[KEY_COUNT]{};
-	uint32_t video[VIDEO_WIDTH * VIDEO_HEIGHT]{};
+	uint8_t keypad[16u]{};
+	//uint32_t video[VIDEO_WIDTH * VIDEO_HEIGHT]{};
 
-    //unsigned int video[64u * 32u]{};
-    //unsigned char keypad[16u]{};
+    unsigned int video[64 * 32]{};
+    //unsigned char keypad[16]{};
 
 
 private:
