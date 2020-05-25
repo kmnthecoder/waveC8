@@ -21,7 +21,7 @@ inline void Chip8::OP_0NNN()
 inline void Chip8::OP_00E0()
 {
     memset(screen, 0, sizeof(screen));
-    drawFlag = 1;
+    //drawFlag = 1;
     pc += 2;
 }
 
@@ -214,7 +214,7 @@ inline void Chip8::OP_CXNN()
 inline void Chip8::OP_DXYN()
 {
 
-/*
+    /*
     unsigned char height = N;
 
     // Wrap if going beyond screen boundaries
@@ -249,37 +249,39 @@ inline void Chip8::OP_DXYN()
     */
 
     // X,Y coordinates of sprite
-    unsigned short x = V[VX];
-    unsigned short y = V[VY];
-    unsigned short height = N;
-    unsigned short pixel;
+
+    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+	uint8_t Vy = (opcode & 0x00F0u) >> 4u;
+	uint8_t height = opcode & 0x000Fu;
+
+    // Wrap if going beyond screen boundaries
+	uint8_t xPos = V[Vx] % SCREEN_WIDTH;
+	uint8_t yPos = V[Vy] % SCREEN_HEIGHT;
+
     V[0xF] = 0;
 
     for (unsigned int yline = 0; yline < height; yline++)
     {
-        pixel = memory[I + yline]; // fetch pixel from memory starting at location I
-        for (unsigned int xline = 0; xline < 8; xline++) // loop over 8 bits of 1 row
+        uint8_t spriteByte = memory[I + yline];
+
+        for (unsigned int xline = 0; xline < 8; xline++)
         {
-            if ((pixel & (0x80 >> xline)) != 0)
-            {
-                unsigned char true_x = (x + xline) % SCREEN_WIDTH;
-                unsigned char true_y = (y + yline);
-                true_y = true_y % SCREEN_HEIGHT;
+            uint8_t spritePixel = spriteByte & (0x80u >> xline);
+			uint32_t *screenPixel = &screen[(yPos + yline) * SCREEN_WIDTH + (xPos + xline)];
 
-                if (true_x < SCREEN_WIDTH && true_y < SCREEN_HEIGHT)
-                {
-                    if (screen[true_x * true_y] == 1)
-                    {
-                        V[0xF] = 1;
-                    }
+            if (spritePixel)
+			{
+				// Screen pixel also on - collision
+				if (*screenPixel == 0xFFFFFFFF)
+				{
+					V[0xF] = 1;
+				}
 
-                    screen[true_x * true_y] ^= 1;
-                }
-            }
-           
+				// Effectively XOR with the sprite pixel
+				*screenPixel ^= 0xFFFFFFFF;
+			}
         }
     }
-    
 
     pc += 2;
 }
