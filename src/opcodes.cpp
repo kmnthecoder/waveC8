@@ -311,7 +311,7 @@ inline void Chip8::OP_EXA1()
 // Store the current value of the delay timer in register VX
 inline void Chip8::OP_FX07()
 {
-    V[VX] = delay_timer;
+    V[VX] = delayTimer;
     pc += 2;
 }
 
@@ -331,14 +331,14 @@ inline void Chip8::OP_FX0A()
 // Set the delay timer to the value of register VX
 inline void Chip8::OP_FX15()
 {
-    delay_timer = V[VX];
+    delayTimer = V[VX];
     pc += 2;
 }
 
 // Set the sound timer to the value of register VX
 inline void Chip8::OP_FX18()
 {
-    sound_timer = V[VX];
+    soundTimer = V[VX];
     pc += 2;
 }
 

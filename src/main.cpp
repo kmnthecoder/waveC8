@@ -19,14 +19,14 @@ int main(int argc, char **argv)
     int delay = std::stoi(argv[2]);
     const char *file = argv[3];
 
-    SdlLayer sdl("CHIP-8", VIDEO_WIDTH * scale, VIDEO_HEIGHT * scale,
-                 VIDEO_WIDTH, VIDEO_HEIGHT);
+    SdlLayer sdl("CHIP-8", SCREEN_WIDTH * scale, SCREEN_HEIGHT * scale,
+                 SCREEN_WIDTH, SCREEN_HEIGHT);
 
     Chip8 myChip8;
     //myChip8.Initizalize();
-    myChip8.LoadROM(file);
+    myChip8.LoadFile(file);
 
-    int videoPitch = sizeof(myChip8.video[0]) * VIDEO_WIDTH;
+    int videoPitch = sizeof(myChip8.screen[0]) * SCREEN_WIDTH;
 
     auto lastCycleTime = std::chrono::high_resolution_clock::now();
 
@@ -44,7 +44,7 @@ int main(int argc, char **argv)
     while (!quit)
     {
 
-        quit = sdl.ProcessInput(myChip8.keypad);
+        quit = sdl.ProcessInput(myChip8.key);
 
         auto currentTime = std::chrono::high_resolution_clock::now();
         float dt = std::chrono::duration<float, std::chrono::milliseconds::period>(currentTime - lastCycleTime).count();
@@ -52,8 +52,8 @@ int main(int argc, char **argv)
         if (dt > delay)
         {
             lastCycleTime = currentTime;
-            myChip8.Cycle();
-            sdl.Update(myChip8.video, videoPitch);
+            myChip8.EmulateCycle();
+            sdl.Update(myChip8.screen, videoPitch);
         }
 
         /*

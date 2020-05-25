@@ -24,7 +24,7 @@ LIBS = -lmingw32 -lSDL2_image -lSDL2main -lSDL2
 #-lmingw32 -lSDL2_image -lSDL2main -lSDL2
 
 # define the C/C++ source files
-SRCS = chip8.cpp sdllayer.cpp main.cpp
+SRCS = chip8.cpp sdllayer.cpp main.cpp opcodes.cpp
 # opcodes.cpp
 
 # define the C/C++ object files 

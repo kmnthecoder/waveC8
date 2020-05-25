@@ -16,12 +16,12 @@ int main(int argc, char **argv)
 	int cycleDelay = std::stoi(argv[2]);
 	char const *romFilename = argv[3];
 
-	SdlLayer platform("CHIP-8 Emulator", VIDEO_WIDTH * videoScale, VIDEO_HEIGHT * videoScale, VIDEO_WIDTH, VIDEO_HEIGHT);
+	SdlLayer platform("CHIP-8 Emulator", SCREEN_WIDTH * videoScale, SCREEN_HEIGHT * videoScale, SCREEN_WIDTH, SCREEN_HEIGHT);
 
 	Chip8 chip8;
 	chip8.LoadROM(romFilename);
 
-	int videoPitch = sizeof(chip8.video[0]) * VIDEO_WIDTH;
+	int videoPitch = sizeof(chip8.video[0]) * SCREEN_WIDTH;
 
 	auto lastCycleTime = std::chrono::high_resolution_clock::now();
 	bool quit = false;
