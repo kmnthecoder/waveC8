@@ -3,8 +3,8 @@
 #ifndef CHIP_H
 #define CHIP_H
 
-extern const int SCREEN_WIDTH;
-extern const int SCREEN_HEIGHT;
+extern const unsigned int SCREEN_WIDTH;
+extern const unsigned int SCREEN_HEIGHT;
 extern const int START_ADDRESS;
 extern const int FONTSET_SIZE;
 extern const int FONTSET_START_ADDRESS;

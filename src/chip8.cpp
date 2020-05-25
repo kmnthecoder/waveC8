@@ -5,8 +5,8 @@
 #include "chip8.h"
 #include "opcodes.cpp"
 
-const int SCREEN_WIDTH = 64;
-const int SCREEN_HEIGHT = 32;
+const unsigned int SCREEN_WIDTH = 64;
+const unsigned int SCREEN_HEIGHT = 32;
 const int START_ADDRESS = 0x200;
 const int FONTSET_SIZE = 80;
 const int FONTSET_START_ADDRESS = 0x50;
@@ -76,9 +76,9 @@ Chip8::~Chip8()
 void Chip8::Initizalize()
 {
     pc = START_ADDRESS; // program counter starts at this memory location
-    opcode = 0;         // reset current opcode
-    I = 0;              // reset index register
-    sp = 0;             // reset stack pointer
+    //opcode = 0;         // reset current opcode
+    //I = 0;              // reset index register
+    //sp = 0;             // reset stack pointer
 
     // clear display, stack, registers, memory
     memset(screen, 0, sizeof(screen));
@@ -93,11 +93,11 @@ void Chip8::Initizalize()
     }
 
     // reset timers
-    delay_timer = 0;
-    sound_timer = 0;
+    //delay_timer = 0;
+    //sound_timer = 0;
 
     // clear screen once
-    drawFlag = true;
+    //drawFlag = true;
 }
 
 void Chip8::EmulateCycle()
@@ -113,6 +113,7 @@ void Chip8::EmulateCycle()
 void Chip8::StepCpu()
 {
     // decode/execute opcode
+    //std::cout << "Opcode: " << ((*this).*(table[(opcode & 0xF000) >> 12]))() << std::endl;
     ((*this).*(table[(opcode & 0xF000) >> 12]))();
 }
 

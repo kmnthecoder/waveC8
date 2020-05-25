@@ -4,12 +4,12 @@
 
 #include "chip8.h"
 
-#define OP ((opcode & 0xF000) >> 12)
-#define NNN (opcode & 0x0FFF)
-#define NN (opcode & 0x00FF)
-#define N (opcode & 0x000F)
-#define VX ((opcode & 0x0F00) >> 8)
-#define VY ((opcode & 0x00F0) >> 4)
+#define OP ((opcode & 0xF000u) >> 12u)
+#define NNN (opcode & 0x0FFFu)
+#define NN (opcode & 0x00FFu)
+#define N (opcode & 0x000Fu)
+#define VX ((opcode & 0x0F00u) >> 8u)
+#define VY ((opcode & 0x00F0u) >> 4u)
 
 // Execute machine language subroutine at address NNN
 inline void Chip8::OP_0NNN()
@@ -389,7 +389,7 @@ inline void Chip8::OP_FX33()
 // I is set to I + X + 1 after operation
 inline void Chip8::OP_FX55()
 {
-    for (int i = 0; i <= VX; i++)
+    for (unsigned int i = 0; i <= VX; i++)
     {
         memory[I + i] = V[i];
     }
@@ -400,7 +400,7 @@ inline void Chip8::OP_FX55()
 // I is set to I + X + 1 after operation
 inline void Chip8::OP_FX65()
 {
-    for (int i = 0; i <= VX; i++)
+    for (unsigned int i = 0; i <= VX; i++)
     {
         V[i] = memory[I + i];
     }
