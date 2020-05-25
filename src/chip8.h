@@ -23,7 +23,7 @@ public:
 
     //unsigned char GetScreen(int index);
     //unsigned char screen[64 * 32];
-    unsigned int screen[64 * 32]{};
+    int screen[64 * 32]{};
     //uint32_t screen[64*32];
     unsigned char key[16]{};
 

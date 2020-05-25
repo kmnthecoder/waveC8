@@ -130,8 +130,7 @@ inline void Chip8::OP_8XY4()
     V[VX] += V[VY];
     */
 
-    unsigned short sum;
-    sum = V[VY] + V[VX];
+    unsigned short sum = V[VY] + V[VX];
     (sum > 0xFF) ? V[0xF] = 1 : V[0xF] = 0;
 
     // lowest 8 bits are kept
@@ -144,7 +143,7 @@ inline void Chip8::OP_8XY4()
 // Set VF to 01 if a borrow does not occur
 inline void Chip8::OP_8XY5()
 {
-    (V[VY] > V[VX]) ? V[0xF] = 0 : V[0xF] = 1;
+    (V[VX] > V[VY]) ? V[0xF] = 1 : V[0xF] = 0;
     V[VX] -= V[VY];
     pc += 2;
 }
@@ -164,7 +163,7 @@ inline void Chip8::OP_8XY6()
 // Set VF to 01 if a borrow does not occur
 inline void Chip8::OP_8XY7()
 {
-    (V[VX] > V[VY]) ? V[0xF] = 0 : V[0xF] = 1;
+    (V[VY] > V[VX]) ? V[0xF] = 1 : V[0xF] = 0;
     V[VX] = V[VY] - V[VX];
     pc += 2;
 }
@@ -251,12 +250,12 @@ inline void Chip8::OP_DXYN()
     // X,Y coordinates of sprite
 
     uint8_t Vx = (opcode & 0x0F00u) >> 8u;
-	uint8_t Vy = (opcode & 0x00F0u) >> 4u;
-	uint8_t height = opcode & 0x000Fu;
+    uint8_t Vy = (opcode & 0x00F0u) >> 4u;
+    uint8_t height = opcode & 0x000Fu;
 
     // Wrap if going beyond screen boundaries
-	uint8_t xPos = V[Vx] % SCREEN_WIDTH;
-	uint8_t yPos = V[Vy] % SCREEN_HEIGHT;
+    uint8_t xPos = V[Vx] % SCREEN_WIDTH;
+    uint8_t yPos = V[Vy] % SCREEN_HEIGHT;
 
     V[0xF] = 0;
 
@@ -267,19 +266,19 @@ inline void Chip8::OP_DXYN()
         for (unsigned int xline = 0; xline < 8; xline++)
         {
             uint8_t spritePixel = spriteByte & (0x80u >> xline);
-			uint32_t *screenPixel = &screen[(yPos + yline) * SCREEN_WIDTH + (xPos + xline)];
+            uint32_t *screenPixel = &screen[(yPos + yline) * SCREEN_WIDTH + (xPos + xline)];
 
             if (spritePixel)
-			{
-				// Screen pixel also on - collision
-				if (*screenPixel == 0xFFFFFFFF)
-				{
-					V[0xF] = 1;
-				}
+            {
+                // Screen pixel also on - collision
+                if (*screenPixel == 0xFFFFFFFF)
+                {
+                    V[0xF] = 1;
+                }
 
-				// Effectively XOR with the sprite pixel
-				*screenPixel ^= 0xFFFFFFFF;
-			}
+                // Effectively XOR with the sprite pixel
+                *screenPixel ^= 0xFFFFFFFF;
+            }
         }
     }
 
@@ -320,7 +319,7 @@ inline void Chip8::OP_FX0A()
 {
     for (int i = 0; i < 16; i++)
     {
-        if (key[i] != 0)
+        if (key[i])
         {
             V[VX] = i;
         }
@@ -357,7 +356,7 @@ inline void Chip8::OP_FX1E()
 
     I += V[VX];
     */
-
+    /*
     unsigned short sum;
     sum = I + V[VX];
     if (sum > 0xFFF)
@@ -365,13 +364,17 @@ inline void Chip8::OP_FX1E()
     else
         V[0xF] = 0;
     I += V[VX];
+    */
+
+    I += V[VX];
+
     pc += 2;
 }
 
 // Set I to the memory address of the sprite data corresponding to the hexadecimal digit stored in register VX
 inline void Chip8::OP_FX29()
 {
-    I = FONTSET_START_ADDRESS + (V[VX] * 0x05);
+    I = FONTSET_START_ADDRESS + (V[VX] * 5);
     pc += 2;
 }
 
@@ -379,9 +382,25 @@ inline void Chip8::OP_FX29()
 // register VX at addresses I, I + 1, and I + 2
 inline void Chip8::OP_FX33()
 {
+    
     memory[I] = V[VX] / 100;
     memory[I + 1] = (V[VX] / 10) % 10;
     memory[I + 2] = (V[VX] % 100) % 10;
+    
+
+   /*
+    // Ones-place
+    memory[I + 2] = V[VX] % 10;
+    V[VX] /= 10;
+
+    // Tens-place
+    memory[I + 1] = V[VX] % 10;
+    V[VX] /= 10;
+
+    // Hundreds-place
+    memory[I] = V[VX] % 10;
+    */
+
     pc += 2;
 }
 
