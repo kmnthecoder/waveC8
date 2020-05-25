@@ -35,7 +35,6 @@ bool SdlLayer::ProcessInput(unsigned char *keys)
 {
     bool quit = false;
     SDL_Event event;
-    
 
     while (SDL_PollEvent(&event))
     {

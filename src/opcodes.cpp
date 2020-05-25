@@ -267,6 +267,7 @@ inline void Chip8::OP_DXYN()
         {
             uint8_t spritePixel = spriteByte & (0x80u >> xline);
             uint32_t *screenPixel = &screen[(yPos + yline) * SCREEN_WIDTH + (xPos + xline)];
+            //unsigned char *screenPixel = &screen[(yPos + yline) * SCREEN_WIDTH + (xPos + xline)];
 
             if (spritePixel)
             {
