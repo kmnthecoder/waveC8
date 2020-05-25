@@ -130,12 +130,11 @@ inline void Chip8::OP_8XY4()
     V[VX] += V[VY];
     */
 
-    unsigned short sum;
-    sum = V[VY] + V[VX];
-    (sum > 0xFF) ? V[0xF] = 1 : V[0xF] = 0;
+    unsigned short sum = V[VY] + V[VX];
+    (sum > 0xFFu) ? V[0xF] = 1 : V[0xF] = 0;
 
     // lowest 8 bits are kept
-    V[VX] = (unsigned char)sum;
+    V[VX] = sum & 0xFFu;
     pc += 2;
 }
 
@@ -154,7 +153,7 @@ inline void Chip8::OP_8XY5()
 // VY is unchanged
 inline void Chip8::OP_8XY6()
 {
-    V[0xF] = V[VX] & 0x01;
+    V[0xF] = V[VX] & 0x01u;
     V[VX] >>= 1;
     pc += 2;
 }
@@ -174,7 +173,7 @@ inline void Chip8::OP_8XY7()
 // VY is unchanged
 inline void Chip8::OP_8XYE()
 {
-    V[0xF] = (V[VX] & 0x80) >> 7;
+    V[0xF] = (V[VX] & 0x80u) >> 7u;
     V[VX] <<= 1;
     pc += 2;
 }
@@ -205,7 +204,8 @@ inline void Chip8::OP_BNNN()
 // Set VX to a random number with a mask of NN
 inline void Chip8::OP_CXNN()
 {
-    V[VX] = (rand() % 0xFF) & NN;
+    //V[VX] = (rand() % 0xFFu) & NN;
+    V[VX] = randByte(randGen) & NN;
     pc += 2;
 }
 
@@ -357,7 +357,7 @@ inline void Chip8::OP_FX1E()
 
     I += V[VX];
     */
-
+   /*
     unsigned short sum;
     sum = I + V[VX];
     if (sum > 0xFFF)
@@ -365,13 +365,17 @@ inline void Chip8::OP_FX1E()
     else
         V[0xF] = 0;
     I += V[VX];
+    */
+
+    I += V[VX];
+
     pc += 2;
 }
 
 // Set I to the memory address of the sprite data corresponding to the hexadecimal digit stored in register VX
 inline void Chip8::OP_FX29()
 {
-    I = FONTSET_START_ADDRESS + (V[VX] * 0x05);
+    I = FONTSET_START_ADDRESS + (V[VX] * 5);
     pc += 2;
 }
 
@@ -389,7 +393,7 @@ inline void Chip8::OP_FX33()
 // I is set to I + X + 1 after operation
 inline void Chip8::OP_FX55()
 {
-    for (unsigned int i = 0; i <= VX; i++)
+    for (unsigned char i = 0; i <= VX; i++)
     {
         memory[I + i] = V[i];
     }
@@ -400,7 +404,7 @@ inline void Chip8::OP_FX55()
 // I is set to I + X + 1 after operation
 inline void Chip8::OP_FX65()
 {
-    for (unsigned int i = 0; i <= VX; i++)
+    for (unsigned char i = 0; i <= VX; i++)
     {
         V[i] = memory[I + i];
     }
@@ -418,20 +422,20 @@ inline void Chip8::OP_NULL()
 
 inline void Chip8::Table0()
 {
-    ((*this).*(table0[opcode & 0x000F]))();
+    ((*this).*(table0[opcode & 0x000Fu]))();
 }
 
 inline void Chip8::Table8()
 {
-    ((*this).*(table8[opcode & 0x000F]))();
+    ((*this).*(table8[opcode & 0x000Fu]))();
 }
 
 inline void Chip8::TableE()
 {
-    ((*this).*(tableE[opcode & 0x000F]))();
+    ((*this).*(tableE[opcode & 0x000Fu]))();
 }
 
 inline void Chip8::TableF()
 {
-    ((*this).*(tableF[opcode & 0x00FF]))();
+    ((*this).*(tableF[opcode & 0x00FFu]))();
 }
