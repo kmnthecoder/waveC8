@@ -203,28 +203,43 @@ inline void Chip8::OP_CXNN()
 // Set VF to 01 if any set pixels are changed to unset, and 00 otherwise
 inline void Chip8::OP_DXYN()
 {
+    unsigned char x = V[VX];
+    unsigned char y = V[VY];
     unsigned char height = N;
-    // Wrap if going beyond screen boundaries
-    unsigned char xPos = V[VX] % SCREEN_WIDTH;
-    unsigned char yPos = V[VY] % SCREEN_HEIGHT;
+    unsigned char pixel;
+    unsigned char spritePixel;
+    unsigned int *screenPixel;
     V[0xF] = 0;
 
     for (int yline = 0; yline < height; yline++)
     {
-        unsigned char spriteByte = memory[I + yline];
+        pixel = memory[I + yline];
         for (int xline = 0; xline < 8; xline++)
         {
-            unsigned char spritePixel = spriteByte & (0x80 >> xline);
-            unsigned int *screenPixel = &screen[(yPos + yline) * SCREEN_WIDTH + (xPos + xline)];
-            if (spritePixel)
+            spritePixel = pixel & (0x80 >> xline);
+            // if spritePixel is on
+            if (spritePixel != 0)
             {
-                // Screen pixel also on - collision
-                if (*screenPixel == 0xFFFFFFFF)
+                unsigned char true_x = (x + xline) % SCREEN_WIDTH;
+                unsigned char true_y = (y + yline);
+                if (vwrap) // can toggle vertical wrapping in chip8.h, on by default
                 {
-                    V[0xF] = 1;
+                    true_y = true_y % SCREEN_HEIGHT;
                 }
-                // Effectively XOR with the sprite pixel
-                *screenPixel ^= 0xFFFFFFFF;
+
+                screenPixel = &screen[true_x + true_y * SCREEN_WIDTH];
+
+                // out of bounds check so game does not crash
+                if (true_x < SCREEN_WIDTH && true_y < SCREEN_HEIGHT)
+                {
+                    // collision
+                    if (*screenPixel == 0xFFFFFFFF)
+                    {
+                        V[0xF] = 1;
+                    }
+                    // toggle the pixel
+                    *screenPixel ^= 0xFFFFFFFF;
+                }
             }
         }
     }
@@ -235,7 +250,7 @@ inline void Chip8::OP_DXYN()
 // the hex value currently stored in register VX is pressed
 inline void Chip8::OP_EX9E()
 {
-    if (key[V[VX]])
+    if (key[V[VX]] == 1)
     {
         pc += 2;
     }
@@ -246,7 +261,7 @@ inline void Chip8::OP_EX9E()
 // the hex value currently stored in register VX is not pressed
 inline void Chip8::OP_EXA1()
 {
-    if (!key[V[VX]])
+    if (key[V[VX]] == 0)
     {
         pc += 2;
     }
@@ -265,7 +280,7 @@ inline void Chip8::OP_FX0A()
 {
     for (int i = 0; i < 16; i++)
     {
-        if (key[i])
+        if (key[i] != 0)
         {
             V[VX] = i;
         }
@@ -290,7 +305,7 @@ inline void Chip8::OP_FX18()
 // Add the value stored in register VX to register I
 inline void Chip8::OP_FX1E()
 {
-   ((I + V[VX]) > 0xFFF) ? V[0xF] = 1 : V[0xF] = 0;
+    ((I + V[VX]) > 0xFFF) ? V[0xF] = 1 : V[0xF] = 0;
     I += V[VX];
     pc += 2;
 }

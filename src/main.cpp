@@ -20,26 +20,14 @@ int main(int argc, char **argv)
 
     SdlLayer sdl("CHIP-8", SCREEN_WIDTH * scale, SCREEN_HEIGHT * scale,
                  SCREEN_WIDTH, SCREEN_HEIGHT);
-
     Chip8 myChip8;
     myChip8.Initizalize();
     myChip8.LoadFile(file);
 
     int videoPitch = sizeof(myChip8.screen[0]) * SCREEN_WIDTH;
-
     auto lastCycleTime = std::chrono::high_resolution_clock::now();
-
     bool quit = false;
-
-    /*
-    unsigned int t1;
-    unsigned int t2;
-    unsigned int elapsed;
-    unsigned int remaining;
-    unsigned int TICKS = 500;
-    unsigned int interval = 1000 / TICKS;
-    */
-
+    
     while (!quit)
     {
 
@@ -54,21 +42,6 @@ int main(int argc, char **argv)
             myChip8.EmulateCycle();
             sdl.Update(myChip8.screen, videoPitch);
         }
-
-        /*
-        t1 = SDL_GetTicks();
-        quit = sdl.ProcessInput(myChip8.key);
-        myChip8.EmulateCycle();
-        sdl.Update(myChip8.screen, videoPitch);
-        t2 = SDL_GetTicks();
-        elapsed = t2 - t1;
-        remaining = interval - elapsed;
-        if (elapsed < interval)
-        {
-            SDL_Delay(remaining);
-            elapsed = interval;
-        }
-    */
     }
 
     return 0;

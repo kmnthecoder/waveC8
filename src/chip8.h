@@ -20,19 +20,20 @@ public:
     void Initizalize();
     void EmulateCycle();
 
-    unsigned char key[KEY_COUNT]{};
     unsigned int screen[SCREEN_HEIGHT * SCREEN_WIDTH]{};
+    unsigned char key[KEY_COUNT]{};
 
 private:
     unsigned short opcode{};
     unsigned char memory[MEMORY_SIZE]{};
     unsigned char V[REGISTER_COUNT]{}; // registers
-    unsigned short I{};              // index register
-    unsigned short pc{};             // program counter
+    unsigned short I{};                // index register
+    unsigned short pc{};               // program counter
     unsigned char delay_timer{};
     unsigned char sound_timer{};
     unsigned short stack[STACK_LEVELS]{};
     unsigned short sp{}; // stack pointer
+    bool vwrap = true; // can toggle vertical wrapping, on by default
 
     const unsigned char fontset[FONTSET_SIZE] =
         {
