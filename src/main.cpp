@@ -1,6 +1,6 @@
 #include <iostream>
 #include <chrono>
-#include <SDL.h>
+//#include <SDL.h>
 
 #include "chip8.h"
 #include "sdllayer.h"

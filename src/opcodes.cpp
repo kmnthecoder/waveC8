@@ -1,6 +1,6 @@
-#include <stdlib.h> /* rand() */
-#include <cstring>  /* memset */
-#include <iostream>
+#include <stdlib.h> // rand
+#include <cstring>  // memset
+#include <iostream> // file read output
 
 #include "chip8.h"
 
@@ -124,18 +124,8 @@ inline void Chip8::OP_8XY3()
 // Set VF to 00 if a carry does not occur
 inline void Chip8::OP_8XY4()
 {
-
     ((V[VY] + V[VX]) > 0xFF) ? V[0xF] = 1 : V[0xF] = 0;
     V[VX] += V[VY];
-
-    /*
-    unsigned short sum = V[VY] + V[VX];
-    (sum > 0xFFu) ? V[0xF] = 1 : V[0xF] = 0;
-
-    // lowest 8 bits are kept
-    V[VX] = sum & 0xFFu;
-    */
-
     pc += 2;
 }
 
@@ -205,8 +195,7 @@ inline void Chip8::OP_BNNN()
 // Set VX to a random number with a mask of NN
 inline void Chip8::OP_CXNN()
 {
-    V[VX] = (rand() % 0xFFu) & NN;
-    //V[VX] = randByte(randGen) & NN;
+    V[VX] = (rand() % 0xFF) & NN;
     pc += 2;
 }
 
@@ -214,26 +203,19 @@ inline void Chip8::OP_CXNN()
 // Set VF to 01 if any set pixels are changed to unset, and 00 otherwise
 inline void Chip8::OP_DXYN()
 {
-
-    /*
     unsigned char height = N;
-
     // Wrap if going beyond screen boundaries
-    unsigned char x = V[VX] % SCREEN_WIDTH;
-    unsigned char y = V[VY] % SCREEN_HEIGHT;
-
+    unsigned char xPos = V[VX] % SCREEN_WIDTH;
+    unsigned char yPos = V[VY] % SCREEN_HEIGHT;
     V[0xF] = 0;
 
-    for (int row = 0; row < height; row++)
+    for (int yline = 0; yline < height; yline++)
     {
-        unsigned char spriteByte = memory[I + row];
-
-        for (int col = 0; col < 8; col++)
+        unsigned char spriteByte = memory[I + yline];
+        for (int xline = 0; xline < 8; xline++)
         {
-            unsigned char spritePixel = spriteByte & (0x80u >> col);
-            unsigned int *screenPixel = &screen[(y + row) * SCREEN_WIDTH + (x + col)];
-
-            // Sprite pixel is on
+            unsigned char spritePixel = spriteByte & (0x80 >> xline);
+            unsigned int *screenPixel = &screen[(yPos + yline) * SCREEN_WIDTH + (xPos + xline)];
             if (spritePixel)
             {
                 // Screen pixel also on - collision
@@ -241,49 +223,11 @@ inline void Chip8::OP_DXYN()
                 {
                     V[0xF] = 1;
                 }
-
                 // Effectively XOR with the sprite pixel
                 *screenPixel ^= 0xFFFFFFFF;
             }
         }
     }
-    */
-
-    // X,Y coordinates of sprite
-
-    //uint8_t Vx = (opcode & 0x0F00u) >> 8u;
-    //uint8_t Vy = (opcode & 0x00F0u) >> 4u;
-
-    uint8_t height = N;
-    // Wrap if going beyond screen boundaries
-    uint8_t xPos = V[VX] % SCREEN_WIDTH;
-    uint8_t yPos = V[VY] % SCREEN_HEIGHT;
-
-    V[0xF] = 0;
-
-    for (unsigned int yline = 0; yline < height; yline++)
-    {
-        uint8_t spriteByte = memory[I + yline];
-
-        for (unsigned int xline = 0; xline < 8; xline++)
-        {
-            uint8_t spritePixel = spriteByte & (0x80u >> xline);
-            uint32_t *screenPixel = &screen[(yPos + yline) * SCREEN_WIDTH + (xPos + xline)];
-
-            if (spritePixel)
-            {
-                // Screen pixel also on - collision
-                if (*screenPixel == 0xFFFFFFFF)
-                {
-                    V[0xF] = 1;
-                }
-
-                // Effectively XOR with the sprite pixel
-                *screenPixel ^= 0xFFFFFFFF;
-            }
-        }
-    }
-
     pc += 2;
 }
 
@@ -346,30 +290,8 @@ inline void Chip8::OP_FX18()
 // Add the value stored in register VX to register I
 inline void Chip8::OP_FX1E()
 {
-    /*
-    if (I + V[VX] > 0xFFF)
-    {
-        V[0xF] = 1;
-    }
-    else
-    {
-        V[0xF] = 0;
-    }
-
+   ((I + V[VX]) > 0xFFF) ? V[0xF] = 1 : V[0xF] = 0;
     I += V[VX];
-    */
-    /*
-    unsigned short sum;
-    sum = I + V[VX];
-    if (sum > 0xFFF)
-        V[0xF] = 1;
-    else
-        V[0xF] = 0;
-    I += V[VX];
-    */
-
-    I += V[VX];
-
     pc += 2;
 }
 
@@ -412,31 +334,22 @@ inline void Chip8::OP_FX65()
     pc += 2;
 }
 
-// Null OP Code
-/*
-inline void Chip8::OP_NULL()
-{
-    std::cout << std::endl
-              << "Null OP Code" << std::endl;
-}
-*/
-
 inline void Chip8::Table0()
 {
-    ((*this).*(table0[opcode & 0x000Fu]))();
+    ((*this).*(table0[opcode & 0x000F]))();
 }
 
 inline void Chip8::Table8()
 {
-    ((*this).*(table8[opcode & 0x000Fu]))();
+    ((*this).*(table8[opcode & 0x000F]))();
 }
 
 inline void Chip8::TableE()
 {
-    ((*this).*(tableE[opcode & 0x000Fu]))();
+    ((*this).*(tableE[opcode & 0x000F]))();
 }
 
 inline void Chip8::TableF()
 {
-    ((*this).*(tableF[opcode & 0x00FFu]))();
+    ((*this).*(tableF[opcode & 0x00FF]))();
 }

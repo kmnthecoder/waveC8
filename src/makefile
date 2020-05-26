@@ -20,7 +20,7 @@ INCLUDES = -IC:\MinGW\include\SDL2
 # define any libraries to link into executable:
 #   if I want to link in libraries (libx.so or libx.a) I use the -llibname 
 #   option, something like (this will link in libmylib.so and libm.so:
-LIBS = -lmingw32 -lSDL2_image -lSDL2main -lSDL2
+LIBS = -lmingw32 -lSDL2main -lSDL2
 #-lmingw32 -lSDL2_image -lSDL2main -lSDL2
 
 # define the C/C++ source files
