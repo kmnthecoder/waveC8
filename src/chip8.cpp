@@ -96,12 +96,11 @@ void Chip8::FetchOPCode()
 
 void Chip8::UpdateTimers()
 {
-    // update timers
     if (delay_timer > 0)
     {
         delay_timer--;
     }
-
+    
     if (sound_timer > 0)
     {
         if (sound_timer == 1)
