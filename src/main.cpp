@@ -12,7 +12,6 @@ int main(int argc, char **argv)
     {
         std::cerr << "Format: <SCALE> <DELAY> <FILENAME>" << std::endl;
         std::exit(EXIT_FAILURE);
-        //return 0;
     }
 
     int scale = std::stoi(argv[1]);
@@ -23,7 +22,7 @@ int main(int argc, char **argv)
                  SCREEN_WIDTH, SCREEN_HEIGHT);
 
     Chip8 myChip8;
-    //myChip8.Initizalize();
+    myChip8.Initizalize();
     myChip8.LoadFile(file);
 
     int videoPitch = sizeof(myChip8.screen[0]) * SCREEN_WIDTH;
