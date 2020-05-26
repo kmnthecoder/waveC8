@@ -67,7 +67,7 @@ void Chip8::Initizalize()
     memset(memory, 0, sizeof(memory));
 
     // load fontset into memory
-    for (unsigned int i = 0; i < FONTSET_SIZE; i++)
+    for (int i = 0; i < FONTSET_SIZE; i++)
     {
         memory[i + FONTSET_START_ADDRESS] = fontset[i];
     }
@@ -86,12 +86,12 @@ void Chip8::EmulateCycle()
 
 void Chip8::StepCpu()
 {
-    ((*this).*(table[(opcode & 0xF000u) >> 12u]))();
+    ((*this).*(table[(opcode & 0xF000) >> 12]))();
 }
 
 void Chip8::FetchOPCode()
 {
-    opcode = (memory[pc] << 8u) | memory[pc + 1];
+    opcode = (memory[pc] << 8) | memory[pc + 1];
 }
 
 void Chip8::UpdateTimers()
@@ -100,7 +100,7 @@ void Chip8::UpdateTimers()
     {
         delay_timer--;
     }
-    
+
     if (sound_timer > 0)
     {
         if (sound_timer == 1)
