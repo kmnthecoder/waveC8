@@ -21,7 +21,6 @@ public:
     void LoadFile(const char *filename);
     void Initizalize();
     void EmulateCycle();
-    void Cycle();
 
     //unsigned char key[KEY_COUNT]{};
     uint8_t key[KEY_COUNT]{};
