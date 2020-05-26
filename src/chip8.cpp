@@ -1,4 +1,5 @@
 #include <fstream> // reading files
+#include <windows.h> // this is windows specific, if it were to be cross platform then need to use SDL
 
 #include "chip8.h"
 #include "opcodes.cpp"
@@ -105,7 +106,8 @@ void Chip8::UpdateTimers()
     {
         if (sound_timer == 1)
         {
-            std::cout << "BEEP" << std::endl;
+            //std::cout << "BEEP" << std::endl;
+            Beep(300, 100); // this is windows specific, if it were to be cross platform then need to use SDL
         }
         sound_timer--;
     }
