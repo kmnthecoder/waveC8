@@ -1,8 +1,6 @@
 #ifndef CHIP_H
 #define CHIP_H
 
-#include <SDL.h>
-
 const int KEY_COUNT = 16;
 const int MEMORY_SIZE = 4096;
 const int REGISTER_COUNT = 16;
@@ -22,16 +20,15 @@ public:
     void Initizalize();
     void EmulateCycle();
 
-    //unsigned char key[KEY_COUNT]{};
-    uint8_t key[KEY_COUNT]{};
+    unsigned char key[KEY_COUNT]{};
     unsigned int screen[SCREEN_HEIGHT * SCREEN_WIDTH]{};
-    
+
 private:
     unsigned short opcode{};
     unsigned char memory[MEMORY_SIZE]{};
     unsigned char V[STACK_LEVELS]{}; // registers
-    unsigned short I{}; // index register
-    unsigned short pc{}; // program counter
+    unsigned short I{};              // index register
+    unsigned short pc{};             // program counter
     unsigned char delay_timer{};
     unsigned char sound_timer{};
     unsigned short stack[STACK_LEVELS]{};
