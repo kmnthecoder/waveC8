@@ -70,10 +70,10 @@ private:
 
     unsigned short pc{}; // program counter
 
-    //unsigned char delayTimer{}; // CHANGE
-    //unsigned char soundTimer{}; // CHANGE
-    unsigned char delayTimer{}; // CHANGE
-    unsigned char soundTimer{}; // CHANGE
+    //unsigned char delay_timer{}; // CHANGE
+    //unsigned char sound_timer{}; // CHANGE
+    unsigned char delay_timer{}; // CHANGE
+    unsigned char sound_timer{}; // CHANGE
 
     unsigned short stack[STACK_LEVELS]{};
     //std::vector<unsigned short> mStack;

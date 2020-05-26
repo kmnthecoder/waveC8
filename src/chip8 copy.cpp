@@ -108,8 +108,8 @@ void Chip8::Initizalize()
     }
 
     // reset timers
-    //delayTimer = 0;
-    //soundTimer = 0;
+    //delay_timer = 0;
+    //sound_timer = 0;
 
     // clear screen once
     //drawFlag = true;
@@ -141,18 +141,18 @@ void Chip8::FetchOPCode()
 void Chip8::UpdateTimers()
 {
     // update timers
-    if (delayTimer > 0)
+    if (delay_timer > 0)
     {
-        delayTimer--;
+        delay_timer--;
     }
 
-    if (soundTimer > 0)
+    if (sound_timer > 0)
     {
-        if (soundTimer == 1)
+        if (sound_timer == 1)
         {
             std::cout << "BEEP" << std::endl;
         }
-        soundTimer--;
+        sound_timer--;
     }
 }
 

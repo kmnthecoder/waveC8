@@ -94,8 +94,8 @@ void Chip8::Initizalize()
     }
 
     // reset timers
-    //delayTimer = 0;
-    //soundTimer = 0;
+    //delay_timer = 0;
+    //sound_timer = 0;
 
     // clear screen once
     //drawFlag = true;
@@ -128,18 +128,18 @@ void Chip8::FetchOPCode()
 void Chip8::UpdateTimers()
 {
     // update timers
-    if (delayTimer > 0)
+    if (delay_timer > 0)
     {
-        delayTimer--;
+        delay_timer--;
     }
 
-    if (soundTimer > 0)
+    if (sound_timer > 0)
     {
-        if (soundTimer == 1)
+        if (sound_timer == 1)
         {
             std::cout << "BEEP" << std::endl;
         }
-        soundTimer--;
+        sound_timer--;
     }
 }
 
@@ -477,7 +477,7 @@ void Chip8::OP_Fx07()
 {
     uint8_t Vx = (opcode & 0x0F00u) >> 8u;
 
-    registers[Vx] = delayTimer;
+    registers[Vx] = delay_timer;
 }
 
 void Chip8::OP_Fx0A()
@@ -558,14 +558,14 @@ void Chip8::OP_Fx15()
 {
     uint8_t Vx = (opcode & 0x0F00u) >> 8u;
 
-    delayTimer = registers[Vx];
+    delay_timer = registers[Vx];
 }
 
 void Chip8::OP_Fx18()
 {
     uint8_t Vx = (opcode & 0x0F00u) >> 8u;
 
-    soundTimer = registers[Vx];
+    sound_timer = registers[Vx];
 }
 
 void Chip8::OP_Fx1E()

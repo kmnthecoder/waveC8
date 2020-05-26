@@ -4,12 +4,12 @@
 
 #include "chip8.h"
 
-#define OP ((opcode & 0xF000u) >> 12u)
-#define NNN (opcode & 0x0FFFu)
-#define NN (opcode & 0x00FFu)
-#define N (opcode & 0x000Fu)
-#define VX ((opcode & 0x0F00u) >> 8u)
-#define VY ((opcode & 0x00F0u) >> 4u)
+#define OP ((opcode & 0xF000) >> 12)
+#define NNN (opcode & 0x0FFF)
+#define NN (opcode & 0x00FF)
+#define N (opcode & 0x000F)
+#define VX ((opcode & 0x0F00) >> 8)
+#define VY ((opcode & 0x00F0) >> 4)
 
 // Execute machine language subroutine at address NNN
 inline void Chip8::OP_0NNN()
@@ -21,7 +21,6 @@ inline void Chip8::OP_0NNN()
 inline void Chip8::OP_00E0()
 {
     memset(screen, 0, sizeof(screen));
-    //drawFlag = 1;
     pc += 2;
 }
 
@@ -125,16 +124,18 @@ inline void Chip8::OP_8XY3()
 // Set VF to 00 if a carry does not occur
 inline void Chip8::OP_8XY4()
 {
-    /*
+
     ((V[VY] + V[VX]) > 0xFF) ? V[0xF] = 1 : V[0xF] = 0;
     V[VX] += V[VY];
-    */
 
+    /*
     unsigned short sum = V[VY] + V[VX];
     (sum > 0xFFu) ? V[0xF] = 1 : V[0xF] = 0;
 
     // lowest 8 bits are kept
     V[VX] = sum & 0xFFu;
+    */
+
     pc += 2;
 }
 
@@ -153,7 +154,7 @@ inline void Chip8::OP_8XY5()
 // VY is unchanged
 inline void Chip8::OP_8XY6()
 {
-    V[0xF] = V[VX] & 0x01u;
+    V[0xF] = V[VX] & 0x01;
     V[VX] >>= 1;
     pc += 2;
 }
@@ -173,7 +174,7 @@ inline void Chip8::OP_8XY7()
 // VY is unchanged
 inline void Chip8::OP_8XYE()
 {
-    V[0xF] = (V[VX] & 0x80u) >> 7u;
+    V[0xF] = (V[VX] & 0x80) >> 7;
     V[VX] <<= 1;
     pc += 2;
 }
@@ -204,8 +205,8 @@ inline void Chip8::OP_BNNN()
 // Set VX to a random number with a mask of NN
 inline void Chip8::OP_CXNN()
 {
-    //V[VX] = (rand() % 0xFFu) & NN;
-    V[VX] = randByte(randGen) & NN;
+    V[VX] = (rand() % 0xFFu) & NN;
+    //V[VX] = randByte(randGen) & NN;
     pc += 2;
 }
 
@@ -250,13 +251,13 @@ inline void Chip8::OP_DXYN()
 
     // X,Y coordinates of sprite
 
-    uint8_t Vx = (opcode & 0x0F00u) >> 8u;
-	uint8_t Vy = (opcode & 0x00F0u) >> 4u;
-	uint8_t height = opcode & 0x000Fu;
+    //uint8_t Vx = (opcode & 0x0F00u) >> 8u;
+    //uint8_t Vy = (opcode & 0x00F0u) >> 4u;
 
+    uint8_t height = N;
     // Wrap if going beyond screen boundaries
-	uint8_t xPos = V[Vx] % SCREEN_WIDTH;
-	uint8_t yPos = V[Vy] % SCREEN_HEIGHT;
+    uint8_t xPos = V[VX] % SCREEN_WIDTH;
+    uint8_t yPos = V[VY] % SCREEN_HEIGHT;
 
     V[0xF] = 0;
 
@@ -267,19 +268,19 @@ inline void Chip8::OP_DXYN()
         for (unsigned int xline = 0; xline < 8; xline++)
         {
             uint8_t spritePixel = spriteByte & (0x80u >> xline);
-			uint32_t *screenPixel = &screen[(yPos + yline) * SCREEN_WIDTH + (xPos + xline)];
+            uint32_t *screenPixel = &screen[(yPos + yline) * SCREEN_WIDTH + (xPos + xline)];
 
             if (spritePixel)
-			{
-				// Screen pixel also on - collision
-				if (*screenPixel == 0xFFFFFFFF)
-				{
-					V[0xF] = 1;
-				}
+            {
+                // Screen pixel also on - collision
+                if (*screenPixel == 0xFFFFFFFF)
+                {
+                    V[0xF] = 1;
+                }
 
-				// Effectively XOR with the sprite pixel
-				*screenPixel ^= 0xFFFFFFFF;
-			}
+                // Effectively XOR with the sprite pixel
+                *screenPixel ^= 0xFFFFFFFF;
+            }
         }
     }
 
@@ -311,7 +312,7 @@ inline void Chip8::OP_EXA1()
 // Store the current value of the delay timer in register VX
 inline void Chip8::OP_FX07()
 {
-    V[VX] = delayTimer;
+    V[VX] = delay_timer;
     pc += 2;
 }
 
@@ -320,7 +321,7 @@ inline void Chip8::OP_FX0A()
 {
     for (int i = 0; i < 16; i++)
     {
-        if (key[i] != 0)
+        if (key[i])
         {
             V[VX] = i;
         }
@@ -331,14 +332,14 @@ inline void Chip8::OP_FX0A()
 // Set the delay timer to the value of register VX
 inline void Chip8::OP_FX15()
 {
-    delayTimer = V[VX];
+    delay_timer = V[VX];
     pc += 2;
 }
 
 // Set the sound timer to the value of register VX
 inline void Chip8::OP_FX18()
 {
-    soundTimer = V[VX];
+    sound_timer = V[VX];
     pc += 2;
 }
 
@@ -357,7 +358,7 @@ inline void Chip8::OP_FX1E()
 
     I += V[VX];
     */
-   /*
+    /*
     unsigned short sum;
     sum = I + V[VX];
     if (sum > 0xFFF)
@@ -393,7 +394,7 @@ inline void Chip8::OP_FX33()
 // I is set to I + X + 1 after operation
 inline void Chip8::OP_FX55()
 {
-    for (unsigned char i = 0; i <= VX; i++)
+    for (int i = 0; i <= VX; i++)
     {
         memory[I + i] = V[i];
     }
@@ -404,7 +405,7 @@ inline void Chip8::OP_FX55()
 // I is set to I + X + 1 after operation
 inline void Chip8::OP_FX65()
 {
-    for (unsigned char i = 0; i <= VX; i++)
+    for (int i = 0; i <= VX; i++)
     {
         V[i] = memory[I + i];
     }
