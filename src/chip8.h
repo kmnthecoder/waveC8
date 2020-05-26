@@ -26,7 +26,7 @@ public:
 private:
     unsigned short opcode{};
     unsigned char memory[MEMORY_SIZE]{};
-    unsigned char V[STACK_LEVELS]{}; // registers
+    unsigned char V[REGISTER_COUNT]{}; // registers
     unsigned short I{};              // index register
     unsigned short pc{};             // program counter
     unsigned char delay_timer{};
