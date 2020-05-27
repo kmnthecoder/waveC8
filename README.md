@@ -16,7 +16,8 @@ Example: ./chip8 10 1 ../roms/c8games/PONG3
 
 If you want to compile, you'll need the SDL2 library.
 
-# License
+# License [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
     Copyright 2020 Kevin Nguyen
 
     Licensed under the Apache License, Version 2.0 (the "License");
