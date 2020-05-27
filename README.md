@@ -1,7 +1,7 @@
 # CHIP-8 Emulator by b4kill
 A CHIP-8 emulator ran in a terminal for Windows.
 
-# Instructions
+# How to run
 This program relies on command line arguments in order to run.
 
 Format: SCALE DELAY FILEPATH
@@ -15,6 +15,17 @@ Filepath is the path of the file in which you want to open.
 Example: ./chip8 10 1 ../roms/c8games/PONG3
 
 If you want to compile, you'll need the SDL2 library.
+
+# Keys
+Keys are mapped to:
+
+1 2 3 4
+
+Q W E R
+
+A S D F
+
+Z X C V
 
 # License [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
