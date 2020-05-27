@@ -1,7 +1,6 @@
-#include <SDL.h>
 #include <iostream>
 
-#include "sdllayer.h"
+#include "sdllayer.hpp"
 
 SdlLayer::SdlLayer(char const *title, int windowWidth, int windowHeight, int textureWidth, int textureHeight)
 {

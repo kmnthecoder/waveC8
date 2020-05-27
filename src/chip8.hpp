@@ -33,7 +33,7 @@ private:
     unsigned char sound_timer{};
     unsigned short stack[STACK_LEVELS]{};
     unsigned short sp{}; // stack pointer
-    bool vwrap = true; // can toggle vertical wrapping, on by default
+    bool vwrap = true;   // can toggle vertical wrapping, on by default
 
     const unsigned char fontset[FONTSET_SIZE] =
         {
@@ -56,7 +56,7 @@ private:
     };
 
     void UpdateTimers();
-    void FetchOPCode();
+    void FetchOpCode();
     void StepCpu();
 
     inline void OP_0NNN();

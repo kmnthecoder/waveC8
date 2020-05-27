@@ -1,16 +1,15 @@
 #include <iostream>
 #include <chrono>
-#include <SDL.h>
 
-#include "chip8.h"
-#include "sdllayer.h"
+#include "chip8.hpp"
+#include "sdllayer.hpp"
 
 int main(int argc, char **argv)
 {
 
     if (argc != 4)
     {
-        std::cerr << "Format: <SCALE> <DELAY> <FILENAME>" << std::endl;
+        std::cerr << "Format: <SCALE> <DELAY> <FILEPATH>" << std::endl;
         std::exit(EXIT_FAILURE);
     }
 
@@ -18,16 +17,17 @@ int main(int argc, char **argv)
     int delay = std::stoi(argv[2]);
     const char *file = argv[3];
 
-    SdlLayer sdl("CHIP-8", SCREEN_WIDTH * scale, SCREEN_HEIGHT * scale,
+    SdlLayer sdl("CHIP-8 Emulator by b4kill", SCREEN_WIDTH * scale, SCREEN_HEIGHT * scale,
                  SCREEN_WIDTH, SCREEN_HEIGHT);
     Chip8 myChip8;
+
     myChip8.Initizalize();
     myChip8.LoadFile(file);
 
     int videoPitch = sizeof(myChip8.screen[0]) * SCREEN_WIDTH;
     auto lastCycleTime = std::chrono::high_resolution_clock::now();
     bool quit = false;
-    
+
     while (!quit)
     {
 

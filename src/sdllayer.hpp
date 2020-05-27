@@ -1,6 +1,8 @@
 #ifndef SDLLAYER_H
 #define SDLLAYER_H
 
+#include <SDL.h>
+
 class SdlLayer
 {
 public:

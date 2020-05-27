@@ -1,7 +1,7 @@
-#include <fstream> // reading files
+#include <fstream>   // reading files
 #include <windows.h> // this is windows specific, if it were to be cross platform then need to use SDL
 
-#include "chip8.h"
+#include "chip8.hpp"
 #include "opcodes.cpp"
 
 Chip8::Chip8()
@@ -80,7 +80,7 @@ void Chip8::Initizalize()
 
 void Chip8::EmulateCycle()
 {
-    FetchOPCode();
+    FetchOpCode();
     StepCpu();
     UpdateTimers();
 }
@@ -90,7 +90,7 @@ void Chip8::StepCpu()
     ((*this).*(table[(opcode & 0xF000) >> 12]))();
 }
 
-void Chip8::FetchOPCode()
+void Chip8::FetchOpCode()
 {
     opcode = (memory[pc] << 8) | memory[pc + 1];
 }
@@ -106,8 +106,7 @@ void Chip8::UpdateTimers()
     {
         if (sound_timer == 1)
         {
-            //std::cout << "BEEP" << std::endl;
-            Beep(300, 100); // this is windows specific, if it were to be cross platform then need to use SDL
+            Beep(300, 50); // this is windows specific, if it were to be cross platform then need to use SDL
         }
         sound_timer--;
     }

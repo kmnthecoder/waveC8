@@ -2,7 +2,7 @@
 #include <cstring>  // memset
 #include <iostream> // file read output
 
-#include "chip8.h"
+#include "chip8.hpp"
 
 #define OP ((opcode & 0xF000) >> 12)
 #define NNN (opcode & 0x0FFF)
@@ -222,7 +222,7 @@ inline void Chip8::OP_DXYN()
             {
                 unsigned char true_x = (x + xline) % SCREEN_WIDTH;
                 unsigned char true_y = (y + yline);
-                if (vwrap) // can toggle vertical wrapping in chip8.h, on by default
+                if (vwrap) // can toggle vertical wrapping in chip8.hpp, on by default
                 {
                     true_y = true_y % SCREEN_HEIGHT;
                 }
