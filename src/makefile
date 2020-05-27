@@ -7,7 +7,7 @@
 CC = g++
 
 # define any compile-time flags
-CFLAGS = -g -Wall
+CFLAGS = -g -Wall -static-libgcc -static-libstdc++
 
 # define any directories containing header files other than /usr/include
 INCLUDES = -IC:\MinGW\include\SDL2
