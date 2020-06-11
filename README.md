@@ -1,4 +1,4 @@
-# CHIP-8 Emulator by b4kill
+# CHIP-8 Emulator by kmnthecoder
 A CHIP-8 emulator ran in a terminal for Windows.
 
 # How to run
