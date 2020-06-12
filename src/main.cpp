@@ -7,6 +7,9 @@
 int main(int argc, char **argv)
 {
 
+    std::cout << "Hello world!" << std::endl;
+
+    /*
     if (argc != 4)
     {
         std::cerr << "Format: <SCALE> <DELAY> <FILEPATH>" << std::endl;
@@ -43,6 +46,6 @@ int main(int argc, char **argv)
             sdl.Update(myChip8.screen, videoPitch);
         }
     }
-
+    */
     return 0;
 }
