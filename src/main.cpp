@@ -17,7 +17,7 @@ int main(int argc, char **argv)
     int delay = std::stoi(argv[2]);
     const char *file = argv[3];
 
-    SdlLayer sdl("CHIP-8 Emulator by b4kill", SCREEN_WIDTH * scale, SCREEN_HEIGHT * scale,
+    SdlLayer sdl("CHIP-8 Emulator by kmnthecoder", SCREEN_WIDTH * scale, SCREEN_HEIGHT * scale,
                  SCREEN_WIDTH, SCREEN_HEIGHT);
     Chip8 myChip8;
 

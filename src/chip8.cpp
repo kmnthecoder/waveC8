@@ -106,7 +106,7 @@ void Chip8::UpdateTimers()
     {
         if (sound_timer == 1)
         {
-            Beep(300, 300); // this is windows specific, if it were to be cross platform then need to use SDL
+            //Beep(300, 300); // this is windows specific, if it were to be cross platform then need to use SDL
         }
         sound_timer--;
     }
