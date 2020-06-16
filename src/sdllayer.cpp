@@ -6,7 +6,7 @@ SdlLayer::SdlLayer(char const *title, int windowWidth, int windowHeight, int tex
 {
     SDL_Init(SDL_INIT_VIDEO);
 
-    window = SDL_CreateWindow(title, 50, 50, windowWidth, windowHeight, SDL_WINDOW_SHOWN);
+    window = SDL_CreateWindow(title, 300, 300, windowWidth, windowHeight, SDL_WINDOW_SHOWN);
 
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
 

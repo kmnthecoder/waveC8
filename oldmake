@@ -38,7 +38,7 @@ SRCS = chip8.cpp sdllayer.cpp main.cpp opcodes.cpp
 OBJS = $(SRCS:.cpp=.o)
 
 # define the executable file 
-MAIN = chip8
+MAIN = waveC8
 
 # The following part of the makefile is generic; it can be used to 
 # build any executable just by changing the definitions above and by
@@ -60,7 +60,7 @@ $(MAIN): $(OBJS)
 	$(CC) $(CFLAGS) $(INCLUDES) -c $<  -o $@
 
 clean:
-	$(RM) *.o *~ $(MAIN).exe
+	$(RM) $(OPATH)*.o *~ $(MAIN).exe
 
 depend: $(SRCS)
 	makedepend $(INCLUDES) $^

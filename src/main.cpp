@@ -30,7 +30,6 @@ int main(int argc, char **argv)
 
     while (!quit)
     {
-
         quit = sdl.ProcessInput(myChip8.key);
 
         auto currentTime = std::chrono::high_resolution_clock::now();
