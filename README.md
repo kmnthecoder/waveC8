@@ -1,9 +1,19 @@
 # CHIP-8 Emulator by kmnthecoder
 A CHIP-8 emulator using C++ and SDL2 for rendering.
 
+![PONG2](demo/PONG2.gif)
+
+![Space Invaders](demo/invaders.gif)
+
+![Tetris](demo/tetris.gif)
+
 # Tests
 
-Passing tests:
+Passes CHIP-8 tests
+
+![Opcode Test](demo/opcode test.gif)
+
+![BestCoder Test](demo/bestcoder test.gif)
 
 # How to run
 This program relies on command line arguments in order to run.
