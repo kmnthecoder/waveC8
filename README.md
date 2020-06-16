@@ -1,7 +1,9 @@
 # CHIP-8 Emulator by kmnthecoder
 A CHIP-8 emulator using C++ and SDL2 for rendering.
 
+# Tests
 
+Passing tests:
 
 # How to run
 This program relies on command line arguments in order to run.
@@ -19,10 +21,6 @@ Scale of 10 is a good starting place, this will determine the scaling size of th
 Delay is how fast the emulator runs, anywhere from 1-3 is a good value depending on the game.
 
 Filepath is the path of the file in which you want to open.
-
-
-
-If you want to compile, you'll need the SDL2 library.
 
 # Keys
 Keys are mapped to:
