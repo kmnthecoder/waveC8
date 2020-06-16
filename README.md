@@ -1,5 +1,5 @@
 # CHIP-8 Emulator by kmnthecoder
-A CHIP-8 emulator ran in a terminal for Windows.
+A CHIP-8 emulator using C++ and SDL2 for rendering.
 
 # How to run
 This program relies on command line arguments in order to run.
