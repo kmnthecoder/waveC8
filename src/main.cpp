@@ -7,9 +7,6 @@
 int main(int argc, char **argv)
 {
 
-    std::cout << "Hello world!" << std::endl;
-
-    /*
     if (argc != 4)
     {
         std::cerr << "Format: <SCALE> <DELAY> <FILEPATH>" << std::endl;
@@ -33,7 +30,6 @@ int main(int argc, char **argv)
 
     while (!quit)
     {
-
         quit = sdl.ProcessInput(myChip8.key);
 
         auto currentTime = std::chrono::high_resolution_clock::now();
@@ -46,6 +42,6 @@ int main(int argc, char **argv)
             sdl.Update(myChip8.screen, videoPitch);
         }
     }
-    */
+
     return 0;
 }

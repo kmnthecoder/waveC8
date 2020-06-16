@@ -11,7 +11,7 @@ OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
 # -I is a preprocessor flag, not a compiler flag
 # The -MMD -MP flags are used to generate the header dependencies automatically
-CPPFLAGS := -Iinclude -MMD -MP
+CPPFLAGS := -Iinclude -Ilib -MMD -MP
 # some warnings about bad code
 CFLAGS   := -Wall
 # Include paths
