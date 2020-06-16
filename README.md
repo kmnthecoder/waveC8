@@ -5,8 +5,6 @@ A CHIP-8 emulator using C++ and SDL2 for rendering.
 
 ![Space Invaders](demo/invaders_demo.gif)
 
-![Tetris](demo/tetris_demo.gif)
-
 # Tests
 
 Passes CHIP-8 tests
