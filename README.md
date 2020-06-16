@@ -1,10 +1,18 @@
 # CHIP-8 Emulator by kmnthecoder
 A CHIP-8 emulator using C++ and SDL2 for rendering.
 
+
+
 # How to run
 This program relies on command line arguments in order to run.
 
-Format: SCALE DELAY FILEPATH
+Format: 
+    
+    SCALE DELAY FILEPATH
+    
+Example:
+
+    ./chip8 10 1 ../roms/c8games/PONG3
 
 Scale of 10 is a good starting place, this will determine the scaling size of the window.
 
@@ -12,20 +20,28 @@ Delay is how fast the emulator runs, anywhere from 1-3 is a good value depending
 
 Filepath is the path of the file in which you want to open.
 
-Example: ./chip8 10 1 ../roms/c8games/PONG3
+
 
 If you want to compile, you'll need the SDL2 library.
 
 # Keys
 Keys are mapped to:
 
-1 2 3 4
+      CHIP-8 keypad            Your keyboard
+        +-+-+-+-+                +-+-+-+-+
+        |1|2|3|C|                |1|2|3|4|
+        +-+-+-+-+                +-+-+-+-+
+        |4|5|6|D|                |Q|W|E|R|
+        +-+-+-+-+       =>       +-+-+-+-+
+        |7|8|9|E|                |A|S|D|F|
+        +-+-+-+-+                +-+-+-+-+
+        |A|0|B|F|                |Z|X|C|V|
+        +-+-+-+-+                +-+-+-+-+
 
-Q W E R
+# Building
+You'll need the SDL2 library in order to build. The makefile I used is included in the repository. I compiled with MinGW64.
 
-A S D F
-
-Z X C V
+# Lessons learned / Final thoughts
 
 # License [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
