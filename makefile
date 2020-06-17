@@ -4,8 +4,9 @@ SRC_DIR := src
 OBJ_DIR := obj
 # or . if you want it in the current directory
 BIN_DIR := bin
+EXENAME := waveC8
 
-EXE := $(BIN_DIR)/waveC8
+EXE := $(BIN_DIR)/$(EXENAME)
 SRC := $(wildcard $(SRC_DIR)/*.cpp)
 OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
@@ -13,6 +14,7 @@ OBJ := $(SRC:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 # The -MMD -MP flags are used to generate the header dependencies automatically
 CPPFLAGS := -Iinclude -Ilib -MMD -MP
 # some warnings about bad code
+# -static-libgcc -static-libstdc++ <= for release exe
 CFLAGS   := -Wall
 # Include paths
 INCLUDES := -IC:\msys64\mingw64\include\SDL2
