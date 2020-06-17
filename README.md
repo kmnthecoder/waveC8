@@ -1,30 +1,27 @@
 # CHIP-8 Emulator by kmnthecoder
 A CHIP-8 emulator using C++ and SDL2 for rendering.
 
-![PONG2](demo/PONG2.gif)
+![Space Invaders](demo/invaders_demo.gif)
 
-![Space Invaders](demo/invaders.gif)
-
-![Tetris](demo/tetris.gif)
+![PONG2](demo/pong2_demo.gif)
 
 # Tests
-
 Passes CHIP-8 tests
 
-![Opcode Test](demo/opcode test.gif)
+![Opcode Test](demo/test1_demo.gif)
 
-![BestCoder Test](demo/bestcoder test.gif)
+![BestCoder Test](demo/test2_demo.gif)
 
 # How to run
 This program relies on command line arguments in order to run.
 
 Format: 
     
-    SCALE DELAY FILEPATH
+    PROGRAM_PATH SCALE DELAY FILE_PATH
     
 Example:
 
-    ./chip8 10 1 ../roms/c8games/PONG3
+    ./waveC8 10 1 ../roms/PONG2
 
 Scale of 10 is a good starting place, this will determine the scaling size of the window.
 
@@ -47,9 +44,16 @@ Keys are mapped to:
         +-+-+-+-+                +-+-+-+-+
 
 # Building
-You'll need the SDL2 library in order to build. The makefile I used is included in the repository. I compiled with MinGW64.
+You'll need the SDL2 library in order to build. The makefile I used is included in the repository. I compiled with MinGW-w64.
 
 # Lessons learned / Final thoughts
+This project was undertaken in order to familiarize myself with C++ after not having used it for quite a while. 
+
+I've learned a lot about emulation development; namely, how each system component interacts with each other (e.g., RAM, CPU, display), and SDL2-like libraries (handling input, graphics, audio).
+
+The biggest hurdle in this project was understanding the different components, and understanding how the CPU worked. Some of the OP codes were challenging to implement, such as the draw OP code. They have taught me a lot about bit-wise operations and the inner workings of a CPU architecture.
+
+I highly recommend this type of project to anyone wanting to delve into emulator development, low level system development, and video game programming.
 
 # License [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
