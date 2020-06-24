@@ -1,4 +1,4 @@
-# CHIP-8 Emulator by kmnthecoder
+# CHIP-8 Emulator
 A CHIP-8 emulator using C++ and SDL2 for rendering.
 
 ![Space Invaders](demo/invaders_demo.gif)
